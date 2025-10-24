@@ -15,7 +15,9 @@ export const register = async (req,res) => {
         }
 
         userValidator(req.body);
-        
+
+        req.body.user = 'user'; // only users will be registered through this route
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
 
@@ -24,7 +26,39 @@ export const register = async (req,res) => {
         // will already throw if email is already present in duplicate.
         const user = await User.create(req.body); 
 
-        const token = jwt.sign({emailId,userName},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
+        const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
+        res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
+        console.log(token);
+
+        res.status(201).send("User Registered Successfully");
+
+    } catch (error) {
+        res.status(400).send(`Error : ${error}`);
+    }
+}
+export const adminRegister = async (req,res) => {
+    try {
+        const {firstName,lastName,userName, emailId, password} = req.body;
+        // console.log(req.body);
+
+        const existingUser = await User.findOne({ userName });
+        if (existingUser) {
+            return res.status(409).send("Error: Username is already taken.");
+        }
+
+        userValidator(req.body);
+
+        req.body.user = 'admin'; // only users will be registered through this route
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password,salt);
+
+        req.body.password = hashedPassword;
+
+        // will already throw if email is already present in duplicate.
+        const user = await User.create(req.body); 
+
+        const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
         console.log(token);
 
@@ -39,6 +73,7 @@ export const login = async(req,res) =>{
     try {
         let {emailId, userName, password} = req.body;
 
+        // console.log(req.body);
         if (!(emailId || userName) || !password) {
             return res.status(400).json({
               success: false,
@@ -47,17 +82,18 @@ export const login = async(req,res) =>{
           }
         
         const isEmail = emailId ? true : false;
-        const query = isEmail ? { emailId} : { userName };
-
-        const user = await User.findOne(query);
-
+        const user = await User.findOne({ $or: [{ emailId: emailId },{ userName: userName }]});
+        
         if(isEmail){
             userName = user?.userName;
         }
         else{
             emailId = user?.emailId;
         }
+        console.log(emailId);
+        console.log(userName);
         
+        console.log(user);
         const isMatch = await bcrypt.compare(password,user.password);
 
         if(!user || !isMatch)
@@ -65,7 +101,7 @@ export const login = async(req,res) =>{
         
         console.log(emailId);
         console.log(userName);
-        const token = jwt.sign({emailId,userName},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
+        const token = user?jwt.sign({emailId,userName,role:user.role},process.env.JWT_SECRET_KEY,{expiresIn: 60*60}):false;
         console.log(token);
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
         res.status(200).send("User Logged In Successfully");
@@ -100,4 +136,5 @@ export const logout = async(req,res) =>{
         res.status(401).send('Error : ',error);
     }
 }
+
 
