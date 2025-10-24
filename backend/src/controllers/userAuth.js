@@ -48,8 +48,6 @@ export const adminRegister = async (req,res) => {
 
         userValidator(req.body);
 
-        req.body.user = 'admin'; // only users will be registered through this route
-
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
 
