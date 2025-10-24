@@ -2,7 +2,7 @@ import User from "../models/userModel.js"
 import { userValidator } from "../utils/validator.js";
 import bcrypt, { hash } from "bcrypt";
 import jwt from 'jsonwebtoken';
-import { redisClient } from "../../redis.js";
+import { redisClient } from "../redis.js";
 
 export const register = async (req,res) => {
     try {

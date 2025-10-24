@@ -10,3 +10,5 @@ authRouter.post('/login',login);
 authRouter.post('/logout',logout);
 
 authRouter.get('/get-profile',getProfile);
+
+export default authRouter;
