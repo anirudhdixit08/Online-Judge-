@@ -2,22 +2,19 @@ import User from "../models/userModel.js"
 import { userValidator } from "../utils/validator.js";
 import bcrypt, { hash } from "bcrypt";
 import jwt from 'jsonwebtoken';
-import { redisClient } from "../redis.js";
+import { redisClient } from "../config/redis.js";
 
 export const register = async (req,res) => {
     try {
         const {firstName,lastName,userName, emailId, password} = req.body;
+        // console.log(req.body);
 
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ userName });
         if (existingUser) {
             return res.status(409).send("Error: Username is already taken.");
         }
-        const existingEmail = await User.findOne({ email });
-        if (existingEmail) {
-            return res.status(409).send("Error: Username is already taken.");
-        }
 
-        userValidator(req.body);
+        // userValidator(req.body);
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
@@ -40,7 +37,7 @@ export const register = async (req,res) => {
 
 export const login = async(req,res) =>{
     try {
-        const {emailId, userName, password} = req.body;
+        let {emailId, userName, password} = req.body;
 
         if (!(emailId || userName) || !password) {
             return res.status(400).json({
@@ -53,12 +50,21 @@ export const login = async(req,res) =>{
         const query = isEmail ? { emailId} : { userName };
 
         const user = await User.findOne(query);
+
+        if(isEmail){
+            userName = user?.userName;
+        }
+        else{
+            emailId = user?.emailId;
+        }
         
         const isMatch = await bcrypt.compare(password,user.password);
 
         if(!user || !isMatch)
             throw new Error("Invalid Credentials");
         
+        console.log(emailId);
+        console.log(userName);
         const token = jwt.sign({emailId,userName},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
         console.log(token);
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
@@ -67,19 +73,31 @@ export const login = async(req,res) =>{
         res.status(401).send(`Error : ${error}`);
     }
 }
+
 export const logout = async(req,res) =>{
     try {
 
-        const {token} = res.cookies;
+        console.log("logout called!");
+        const {token} = req.cookies;
+        if (!token) {
+            return res.status(200).send("Already logged out.");
+        }
         console.log(token);
-        const payload = jwt.decode(token);
+        let payload;
+        try {
+            payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        } catch (verifyError) {
+            res.cookie('token', '', { maxAge: 0, httpOnly: true });
+            return res.status(401).send("Invalid token, logged out.");
+        }
         console.log(payload);
 
         await redisClient.set(`token:${token}`,"blocked");
         await redisClient.expireAt(`token:${token}`,payload.exp);
         res.cookie("token",null,{expireAt:new Date(Date.now())});
+        res.status(503).send("User logged out succesfully!");
     } catch (error) {
-        
+        res.status(401).send('Error : ',error);
     }
 }
 

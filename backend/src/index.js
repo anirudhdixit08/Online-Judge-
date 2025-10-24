@@ -3,9 +3,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import DBConnection from './db.js';
+import DBConnection from './config/db.js';
 import cookieparser from 'cookie-parser';
-import  RedisConnection,{redisClient}  from './redis.js';
+import  RedisConnection,{redisClient}  from './config/redis.js';
 import authRouter from './routes/userAuth.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(cookieparser());
 app.use('/user',authRouter);
 
-async function ConnectDatabase() {
+async function InitializeConnection() {
     // console.log("ConnectDB called");
     // await DBConnection();
 
@@ -30,10 +30,17 @@ async function ConnectDatabase() {
 
     await Promise.all([DBConnection(),RedisConnection(redisClient)]);
     console.log("Connection to Mongo and Redis Established!");
+
+    app.listen(process.env.PORT, ()=>{
+        console.log(`Server listening on Port ${process.env.PORT}`);
+    });
     
 }
-ConnectDatabase();
 
-app.listen(process.env.PORT, ()=>{
-    console.log(`Server listening on Port ${process.env.PORT}`);
-});
+InitializeConnection();
+
+
+
+app.get('/',(req,res)=>{
+    res.send("Hello from Anirudh");
+})

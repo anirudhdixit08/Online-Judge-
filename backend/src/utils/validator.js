@@ -1,7 +1,7 @@
 import validator from "validator";
 
 export const userValidator = (data) => {
-  const mandatoryFields = ["firstName", "emailId", "password"];
+  const mandatoryFields = ["firstName", "emailId", "password","userName"];
 
   const isAllowed = mandatoryFields.every((k) => Object.keys(data).includes(k));
   if (!isAllowed) {
@@ -11,7 +11,7 @@ export const userValidator = (data) => {
     throw new Error("Invalid Email!");
   }
   if (
-    !validator.validator.isStrongPassword(data.password, {
+    !validator.isStrongPassword(data.password, {
       minLength: 8,
       minLowercase: 1,
       minUppercase: 1,

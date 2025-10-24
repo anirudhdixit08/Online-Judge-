@@ -1,6 +1,5 @@
 import { createClient } from 'redis';
 
-// 1. Create the client and export it
 export const redisClient = createClient({
     
     username: process.env.REDIS_USERNAME,
