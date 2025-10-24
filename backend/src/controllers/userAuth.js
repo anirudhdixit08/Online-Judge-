@@ -14,8 +14,8 @@ export const register = async (req,res) => {
             return res.status(409).send("Error: Username is already taken.");
         }
 
-        // userValidator(req.body);
-
+        userValidator(req.body);
+        
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
 
