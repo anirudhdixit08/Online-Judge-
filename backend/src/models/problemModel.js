@@ -108,6 +108,22 @@ const problemSchema = new Schema({
         ref: "User",
         required: true
     },
+    referenceCode: {
+        // This field holds the correct solution for each language
+        type: [
+            {
+                language: {
+                    type: String,
+                    enum: ['c++', 'java', 'python', 'c', 'javascript'],
+                    required: true,
+                },
+                solutionCode: { 
+                    type: String,
+                    required: true,
+                },
+            }
+        ],
+    },
 }, { timestamps: true });
 
 const Problem = mongoose.model("Problem", problemSchema);
