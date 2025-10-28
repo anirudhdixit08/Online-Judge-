@@ -28,7 +28,7 @@ export const register = async (req,res) => {
 
         const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
-        console.log(token);
+        // console.log(token);
 
         res.status(201).send("User Registered Successfully");
 
@@ -58,7 +58,7 @@ export const adminRegister = async (req,res) => {
 
         const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
-        console.log(token);
+        // console.log(token);
 
         res.status(201).send("User Registered Successfully");
 
@@ -88,19 +88,19 @@ export const login = async(req,res) =>{
         else{
             emailId = user?.emailId;
         }
-        console.log(emailId);
-        console.log(userName);
+        // console.log(emailId);
+        // console.log(userName);
         
-        console.log(user);
+        // console.log(user);
         const isMatch = await bcrypt.compare(password,user.password);
 
         if(!user || !isMatch)
             throw new Error("Invalid Credentials");
         
-        console.log(emailId);
-        console.log(userName);
+        // console.log(emailId);
+        // console.log(userName);
         const token = user?jwt.sign({emailId,userName,role:user.role},process.env.JWT_SECRET_KEY,{expiresIn: 60*60}):false;
-        console.log(token);
+        // console.log(token);
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
         res.status(200).send("User Logged In Successfully");
     } catch (error) {

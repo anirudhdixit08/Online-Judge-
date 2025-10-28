@@ -13,6 +13,6 @@ authRouter.post('/logout',isAuthenticated,logout);
 
 authRouter.post('/admin/register',isAuthorised,adminRegister)
 
-// authRouter.get('/get-profile',getProfile);
+// authRouter.get('/get-profile',getProfile);  
 
 export default authRouter;

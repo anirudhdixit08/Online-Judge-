@@ -7,6 +7,7 @@ import DBConnection from './config/db.js';
 import cookieparser from 'cookie-parser';
 import  RedisConnection,{redisClient}  from './config/redis.js';
 import authRouter from './routes/userAuth.js';
+import problemRouter from './routes/userProblemRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieparser());
 app.use('/user',authRouter);
+app.use('/user/problem',problemRouter);
 
 async function InitializeConnection() {
     // console.log("ConnectDB called");

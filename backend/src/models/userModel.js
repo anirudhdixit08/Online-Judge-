@@ -50,6 +50,12 @@ const userSchema = new Schema(
         ref: "Problem",
       },
     ],
+    createdProblems: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Problem",
+      },
+    ],
     password: {
       type: String,
       required: [true, "Password is required"],

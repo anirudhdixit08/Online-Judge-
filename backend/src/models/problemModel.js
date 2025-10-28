@@ -51,7 +51,8 @@ const problemSchema = new Schema({
                 'Trie',
                 'Matrix',
                 'Geometry'
-            ]
+            ],
+            required: true
         }
     ],
     visibleTestCases: {
