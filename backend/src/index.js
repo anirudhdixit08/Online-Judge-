@@ -18,8 +18,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieparser());
-app.use('/user',authRouter);
 app.use('/user/problem',problemRouter);
+app.use('/user',authRouter);
 
 async function InitializeConnection() {
     // console.log("ConnectDB called");
