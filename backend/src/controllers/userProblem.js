@@ -256,17 +256,17 @@ export const getProblemByFilter = async (req,res) => {
 }
 
 export const getSolvedProblems = async(req,res) => {
-    // try {
-    //     const solvedProblems = req.result.solvedProblems
-    //     const count = solvedProblems.length;
-    //     const userId = req.result._id;
-    //     const user = await User.findById(userId).populate({
-    //         path : 'solvedProblems',
-    //         select : '_id title difficulty tags'
-    //     });
-    //     res.status(200).send(user.solvedProblems);
+    try {
+        const solvedProblems = req.result.solvedProblems
+        const count = solvedProblems.length;
+        const userId = req.result._id;
+        const user = await User.findById(userId).populate({
+            path : 'solvedProblems',
+            select : '_id title difficulty tags'
+        });
+        res.status(200).send(user.solvedProblems);
 
-    // } catch (error) {
-    //     res.status(500).send('Server Error : '+ error);
-    // }
+    } catch (error) {
+        res.status(500).send('Server Error : '+ error);
+    }
 }
