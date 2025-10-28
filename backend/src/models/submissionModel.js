@@ -27,7 +27,7 @@ const submissionSchema = new Schema({
         default : 'pending'
     },
     runtime : {
-        type : Number, // in milliseconds
+        type : Number, // in seconds
         default : 0
     },
     memory : {
@@ -48,6 +48,6 @@ const submissionSchema = new Schema({
     }
 }, {timestamps : true});
 
-const Submission = mongoose.model("Submission", userSchema);
+const Submission = mongoose.model("Submission", submissionSchema);
 
 export default Submission;

@@ -145,7 +145,7 @@ export const updateProblem = async(req,res) => {
         const updatedProb = await Problem.findByIdAndUpdate(id, {...req.body}, {runValidators : true});
         return res.status(200).json({
             message: "Problem updated successfully!",
-            problem: updatedProblem
+            problem: updatedProb
         });
 
     } catch (err) {
@@ -194,22 +194,15 @@ export const getProblemById = async (req,res) => {
 }
 
 export const getAllProblems = async (req,res) => {
-    const {id} = req.params;
     try {
-        
-        if(!id){
-            return res.status(400).send("ID is missing");
-        }
-
-        const problems = await Problem.findById({}).skip().limit();
+        const problems = await Problem.find({}).select('_id title difficulty tags');
         if(!problems || problems.length==0){
             return res.status(400).send("Problems are missing");
         }
-
-        return res.status(200).send(problems);
+        return res.status(200).json(problems);
 
     } catch (error) {
-        return res.status(400).send("Error : + ",error);
+        return res.status(400).send("Error : " + error);
     }
 }
 
@@ -235,11 +228,9 @@ export const getProblemByFilter = async (req,res) => {
         const pageNum = parseInt(page, 10);
         const limitNum = parseInt(limit, 10);
         const skip = (pageNum - 1) * limitNum;
-
-        const fieldsToSelect = 'title difficulty tags createdAt';
         
         const problems = await Problem.find(filter)
-            .select(fieldsToSelect)
+            .select('-hiddenTestCases -problemCreator')
             .sort({ createdAt: -1 }) // Show newest first
             .skip(skip)
             .limit(limitNum);
@@ -265,5 +256,17 @@ export const getProblemByFilter = async (req,res) => {
 }
 
 export const getSolvedProblems = async(req,res) => {
-    
+    // try {
+    //     const solvedProblems = req.result.solvedProblems
+    //     const count = solvedProblems.length;
+    //     const userId = req.result._id;
+    //     const user = await User.findById(userId).populate({
+    //         path : 'solvedProblems',
+    //         select : '_id title difficulty tags'
+    //     });
+    //     res.status(200).send(user.solvedProblems);
+
+    // } catch (error) {
+    //     res.status(500).send('Server Error : '+ error);
+    // }
 }

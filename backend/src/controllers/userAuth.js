@@ -111,7 +111,7 @@ export const login = async(req,res) =>{
 export const logout = async(req,res) =>{
     try {
 
-        console.log("logout called!");
+        // console.log("logout called!");
         const {token} = req.cookies;
         if (!token) {
             return res.status(200).send("Already logged out.");
@@ -124,7 +124,7 @@ export const logout = async(req,res) =>{
             res.cookie('token', '', { maxAge: 0, httpOnly: true });
             return res.status(401).send("Invalid token, logged out.");
         }
-        console.log(payload);
+        // console.log(payload);
 
         await redisClient.set(`token:${token}`,"blocked");
         await redisClient.expireAt(`token:${token}`,payload.exp);
