@@ -9,7 +9,10 @@ export const submitCode = async (req,res) => {
         const userId = req.result._id;
         const {code,language} = req.body;
 
-        if(!userId || !problemId || !code || !language){
+        if(!userId){
+            return res.status(401).send("Unauthorized: Please log in to run code.");
+        }
+        else if( !problemId || !code || !language){
             return res.status(400).send('Some fields are missing!');
         }
 
@@ -29,6 +32,9 @@ export const submitCode = async (req,res) => {
 
         // now submit this code to Judge0
         const languageId = getLanguageById(language);
+        if (!languageId) {
+            return res.status(400).send(`Language '${language}' is not supported.`);
+        }
         const visibleCases = problem.visibleTestCases || [];
         const hiddenCases = problem.hiddenTestCases || [];
         const allTestCases = visibleCases.concat(hiddenCases);
@@ -87,6 +93,84 @@ export const submitCode = async (req,res) => {
             }
         }
         return res.status(201).send(submittedResult);
+
+    } catch (error) {
+            return res.status(500).send("Internal Sever Error : "+ error);
+    }
+}
+
+export const runCode = async (req,res) => {
+    try {
+        
+        const problemId = req.params.id;
+        const userId = req.result._id;
+        const {code,language} = req.body;
+
+        if(!userId){
+            return res.status(401).send("Unauthorized: Please log in to submit code.");
+        }
+        else if( !problemId || !code || !language){
+            return res.status(400).send('Some fields are missing!');
+        }
+
+        const problem = await Problem.findById(problemId);
+
+
+        // now submit this code to Judge0
+        // const languageId = getLanguageById(language);
+
+        const languageId = getLanguageById(language);
+        if (!languageId) {
+            return res.status(400).send(`Language '${language}' is not supported.`);
+        }
+
+        let testCasesToRun = [];
+        let isCustomRun = false;
+        let visibleTestCasesForResponse = [];
+
+        // if (customInput !== undefined && customInput !== null) {
+
+        //     isCustomRun = true;
+
+        //      if (!problem.referenceCode || !Array.isArray(problem.referenceCode)) {
+        //           return res.status(400).send(`Reference code definitions not found for this problem.`);
+        //      }
+
+        //     const referenceSolution = problem.referenceCode.find(rc => rc.language === language);
+        //     if (!referenceSolution || !referenceSolution.solutionCode) {
+        //          return res.status(400).send(`Reference solution for '${language}' not found or is empty for this problem.`);
+        //     }
+
+        //     const visibleCases = problem.visibleTestCases || [];
+        //     const hiddenCases = problem.hiddenTestCases || [];
+        //     const allTestCases = visibleCases.concat(hiddenCases);
+
+        //     const submissions= allTestCases.map((testcase) => ({
+        //         source_code : code,
+        //         language_id : languageId,
+        //         stdin : testcase.input,
+        //         expected_output : testcase.output
+        //     }));
+
+        // const submitResult = await submitBatch(submissions);
+        // const resultTokens = submitResult.map((value)=> value.token);
+        // const testResults = await submitToken(resultTokens);
+            
+
+        // } else {
+             const submissions= problem.visibleTestCases.map((testcase) => ({
+                source_code : code,
+                language_id : languageId,
+                stdin : testcase.input,
+                expected_output : testcase.output
+            }));
+    
+            const submitResult = await submitBatch(submissions);
+            const resultTokens = submitResult.map((value)=> value.token);
+            const testResults = await submitToken(resultTokens);
+
+            return res.status(201).send(testResults);
+        // } 
 
     } catch (error) {
             return res.status(500).send("Internal Sever Error : "+ error);
