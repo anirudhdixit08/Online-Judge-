@@ -9,6 +9,8 @@ authRouter.post('/register',register);
 
 authRouter.post('/login',login);
 
+authRouter.post("/sendotp", sendOTP)
+
 authRouter.post('/logout',isAuthenticated,logout);
 
 authRouter.post('/admin/register',isAuthorised,adminRegister)
