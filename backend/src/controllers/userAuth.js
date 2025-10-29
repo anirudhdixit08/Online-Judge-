@@ -3,6 +3,7 @@ import { userValidator } from "../utils/validator.js";
 import bcrypt, { hash } from "bcrypt";
 import jwt from 'jsonwebtoken';
 import { redisClient } from "../config/redis.js";
+import Submission from "../models/submissionModel.js"
 
 export const register = async (req,res) => {
     try {
@@ -135,4 +136,16 @@ export const logout = async(req,res) =>{
     }
 }
 
+export const deleteProfile = async (req,res) => {
+    try {
+        
+        const userId = req.result._id;
+        await User.findByIdAndDelete(userId);
+        await Submission.deleteMany({userId}); // you could have also done this using post
+        res.status(200).send("User Deleted Successfully");
+
+    } catch (error) {
+            res.status(500).send("Internal Server Error : " + error);
+    }
+}
 
