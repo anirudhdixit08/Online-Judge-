@@ -1,6 +1,7 @@
 import { getLanguageById , submitBatch, submitToken} from "../utils/problemUtility.js";
 import Problem from "../models/problemModel.js";
 import User from "../models/userModel.js";
+import Submission from "../models/submissionModel.js";
 
 const getStatusDescription = (statusId) => {
     switch (statusId) {
@@ -268,5 +269,30 @@ export const getSolvedProblems = async(req,res) => {
 
     } catch (error) {
         res.status(500).send('Server Error : '+ error);
+    }
+}
+
+export const problemSubmissions = async (req,res) => {
+    try {
+        
+        const userId = req.result._id;
+        const problemId = req.params.pid;
+        if(!userId){
+            return res.status(401).send("Unauthenticated: Please log in to see the submissions.");
+        }
+        else if( !problemId){
+            return res.status(400).send('Problem not found!!');
+        }
+
+        const ans = await Submission.find({userId,problemId});
+
+        if(!ans || ans.length==0 ){
+            res.status(200).send('No submissions found for this problem');
+        }
+
+        res.status(200).send(ans);
+
+    } catch (error) {
+        res.status(500).send("Internal Server error : "+ error);
     }
 }

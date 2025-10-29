@@ -2,7 +2,7 @@ import express from 'express';
 import { isAuthenticated, isAuthorised } from '../middleware/authMiddleware.js';
 import { createProblem, updateProblem, deleteProblem, 
     getProblemById, getAllProblems,getProblemByFilter,
-    getSolvedProblems
+    getSolvedProblems, problemSubmissions
 } from '../controllers/userProblem.js';
 
 const problemRouter = express.Router();
@@ -20,9 +20,11 @@ problemRouter.get('/all-problems',isAuthenticated,getAllProblems);
 
 problemRouter.get('/solved-problems',isAuthenticated,getSolvedProblems);
 
+problemRouter.get('/submissions/:id',isAuthenticated,problemSubmissions);
+
 problemRouter.get('/', isAuthenticated, getProblemByFilter);
 
 // this should be at last anythings that is unmatched by above will be this
-problemRouter.get('/:id',isAuthenticated,getProblemById);
+problemRouter.get('/:pid',isAuthenticated,getProblemById);
 
 export default problemRouter;
