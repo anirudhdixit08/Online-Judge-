@@ -4,6 +4,9 @@ import bcrypt, { hash } from "bcrypt";
 import jwt from 'jsonwebtoken';
 import { redisClient } from "../config/redis.js";
 import Submission from "../models/submissionModel.js"
+import crypto from 'crypto';
+
+const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 
 export const register = async (req,res) => {
     try {
@@ -37,6 +40,7 @@ export const register = async (req,res) => {
         res.status(400).send(`Error : ${error}`);
     }
 }
+
 export const adminRegister = async (req,res) => {
     try {
         const {firstName,lastName,userName, emailId, password} = req.body;
@@ -148,5 +152,7 @@ export const deleteProfile = async (req,res) => {
             res.status(500).send("Internal Server Error : " + error);
     }
 }
+
+
 
 
