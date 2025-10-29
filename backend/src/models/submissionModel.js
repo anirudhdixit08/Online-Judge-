@@ -48,6 +48,8 @@ const submissionSchema = new Schema({
     }
 }, {timestamps : true});
 
+submissionSchema.index({userId:1,problemId:1}); // compound index created.
+
 const Submission = mongoose.model("Submission", submissionSchema);
 
 export default Submission;
