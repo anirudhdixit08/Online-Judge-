@@ -22,7 +22,7 @@ export const mailSender = async (email, title, body) => {
             }
         });
 
-        console.log(transporter);
+        // console.log(transporter);
 
         let info = await transporter.sendMail({
             from: `"Algo Practise" <${process.env.MAIL_USER}>`,  // Use the user from environment variable
@@ -32,7 +32,7 @@ export const mailSender = async (email, title, body) => {
             html: body,  // Pass `body` directly
         });
 
-        console.log(info);
+        // console.log(info);
         return info;
     } catch (error) {
         console.log(error.message);

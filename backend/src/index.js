@@ -10,12 +10,21 @@ import authRouter from './routes/userAuth.js';
 import problemRouter from './routes/userProblemRoutes.js';
 import submitRouter from './routes/submitRoutes.js';
 
+import cors from 'cors';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
+
+const corsOptions = {
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200 // For legacy browser support
+  };
+  
+  app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieparser());

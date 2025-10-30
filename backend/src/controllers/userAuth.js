@@ -16,10 +16,12 @@ export const sendOTP = async (req, res) => {
     try{
 
         //fetch email from request ki body
-        const {emailId} = req.body;
+        const {emailId,userName} = req.body;
+        console.log(userName);
 
         //check if user already exist
         const checkUserPresent = await User.findOne({emailId});
+          
 
         //if User already exist, then return a response
         if(checkUserPresent)
@@ -30,6 +32,19 @@ export const sendOTP = async (req, res) => {
                 message: "User already registered", 
             })
         }
+
+        const checkUserNameTaken = await User.findOne({userName});
+
+        console.log(checkUserNameTaken);
+
+        if(checkUserNameTaken)
+            {
+                // Return 401 Unauthorized status code with error message
+                return res.status(401).json({
+                    success: false,
+                    message: "UserName already taken", 
+                })
+            }
 
         //generate Otp
         var otp = otpGenerator.generate(6, {
@@ -61,7 +76,7 @@ export const sendOTP = async (req, res) => {
         const emailTemplate = otpTemplate(otp);
 
         // Send Email using `mailsender.js`
-        await mailSender (emailId, "Your Digital-Ledger OTP Code", otpTemplate);
+        await mailSender (emailId, "Your OTP Code", otpTemplate);
 
 
         //return response successful
