@@ -146,11 +146,21 @@ export const register = async (req,res) => {
         // will already throw if email is already present in duplicate.
         const user = await User.create(req.body); 
 
+        const reply = {
+            firstName : user.firstName,
+            userName : user.userName,
+            emailId : user.emailId,
+            _id : user._id
+        }
+
         const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
         // console.log(token);
 
-        res.status(201).send("User Registered Successfully");
+        res.status(201).json({
+            user : reply,
+            message : "User Registered Successfully"
+        });
 
     } catch (error) {
         res.status(400).send(`Error : ${error}`);
@@ -203,6 +213,10 @@ export const login = async(req,res) =>{
         const isEmail = emailId ? true : false;
         const user = await User.findOne({ $or: [{ emailId: emailId },{ userName: userName }]});
         
+        if (!user) {
+            throw new Error("User not found!");
+        }
+
         if(isEmail){
             userName = user?.userName;
         }
@@ -222,8 +236,19 @@ export const login = async(req,res) =>{
         // console.log(userName);
         const token = user?jwt.sign({emailId,userName,role:user.role},process.env.JWT_SECRET_KEY,{expiresIn: 60*60}):false;
         // console.log(token);
+
+        const reply = {
+            firstName : user.firstName,
+            userName : user.userName,
+            emailId : user.emailId,
+            _id : user._id
+        }
+
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
-        res.status(200).send("User Logged In Successfully");
+        res.status(200).json({
+            user : reply,
+            message : "LogIn Successful !"
+        });
     } catch (error) {
         res.status(401).send(`Error : ${error}`);
     }
