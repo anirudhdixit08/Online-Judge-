@@ -16,10 +16,10 @@ export const sendOTP = async (req, res) => {
     try{
 
         //fetch email from request ki body
-        const {email} = req.body;
+        const {emailId} = req.body;
 
         //check if user already exist
-        const checkUserPresent = await User.findOne({email});
+        const checkUserPresent = await User.findOne({emailId});
 
         //if User already exist, then return a response
         if(checkUserPresent)
@@ -52,7 +52,7 @@ export const sendOTP = async (req, res) => {
             result = await OTP.findOne({otp: otp});
         }
 
-        const otpPayload = {email, otp};
+        const otpPayload = {emailId, otp};
 
         //create an entry for db
         const otpBody = await OTP.create(otpPayload);
@@ -61,7 +61,7 @@ export const sendOTP = async (req, res) => {
         const emailTemplate = otpTemplate(otp);
 
         // Send Email using `mailsender.js`
-        await mailSender (email, "Your Digital-Ledger OTP Code", emailTemplate);
+        await mailSender (emailId, "Your Digital-Ledger OTP Code", otpTemplate);
 
 
         //return response successful
@@ -84,8 +84,34 @@ export const sendOTP = async (req, res) => {
 
 export const register = async (req,res) => {
     try {
-        const {firstName,lastName,userName, emailId, password} = req.body;
+        const {firstName,lastName,userName, emailId, password,otp} = req.body;
+        if(!firstName || !lastName || !emailId || !password || !userName|| !otp){
+            return res.status(403).json({
+                success: false,
+                message: "All fields are required.",
+            });
+        }
         // console.log(req.body);
+
+        const recentOtp = await OTP.findOne({emailId}).sort({createdAt: -1});
+        // console.log("Recent OTP: ", recentOtp);  //recentOtp is the Otp send to the user via mail which was then stored in db
+        //validate OTP
+        if(!recentOtp)
+        {
+            //OTP Not Found
+            return res.status(400).json({
+                success: false,
+                message: "OTP Not Found.",
+            });
+        }
+        else if(otp !== recentOtp.otp)
+        {
+            //Invalid OTP
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP.",
+            });
+        }
 
         const existingUser = await User.findOne({ userName });
         if (existingUser) {
@@ -101,6 +127,7 @@ export const register = async (req,res) => {
 
         req.body.password = hashedPassword;
 
+        delete req.body.otp;
         // will already throw if email is already present in duplicate.
         const user = await User.create(req.body); 
 
