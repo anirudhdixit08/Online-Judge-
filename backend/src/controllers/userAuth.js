@@ -5,8 +5,82 @@ import jwt from 'jsonwebtoken';
 import { redisClient } from "../config/redis.js";
 import Submission from "../models/submissionModel.js"
 import crypto from 'crypto';
+import { mailSender } from "../utils/mailSender.js";
+import OTP from "../models/otpModel.js";
+import otpGenerator from "otp-generator";
+import { otpTemplate } from "../mail_templates/emailVerificationTemplate.js";
 
 const generateOTP = () => crypto.randomInt(100000, 999999).toString();
+
+export const sendOTP = async (req, res) => {
+    try{
+
+        //fetch email from request ki body
+        const {email} = req.body;
+
+        //check if user already exist
+        const checkUserPresent = await User.findOne({email});
+
+        //if User already exist, then return a response
+        if(checkUserPresent)
+        {
+            // Return 401 Unauthorized status code with error message
+            return res.status(401).json({
+                success: false,
+                message: "User already registered", 
+            })
+        }
+
+        //generate Otp
+        var otp = otpGenerator.generate(6, {
+            upperCaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+        });
+        console.log("OTP Generated: ",otp);
+
+        //check unique otp or not
+        const result = await OTP.findOne({otp: otp});
+
+        while(result)
+        {
+            otp = otpGenerator.generate(6, {
+                upperCaseAlphabets: false,
+                lowerCaseAlphabets: false,
+                specialChars: false,
+            });
+            result = await OTP.findOne({otp: otp});
+        }
+
+        const otpPayload = {email, otp};
+
+        //create an entry for db
+        const otpBody = await OTP.create(otpPayload);
+        console.log(otpBody);
+
+        const emailTemplate = otpTemplate(otp);
+
+        // Send Email using `mailsender.js`
+        await mailSender (email, "Your Digital-Ledger OTP Code", emailTemplate);
+
+
+        //return response successful
+        res.status(200).json({
+            success: true,
+            message: "Otp Sent Succesfully",
+            otp,
+        });  
+
+    }
+    catch(error)
+    {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message: "Error While Sending OTP",
+        });
+    }
+}
 
 export const register = async (req,res) => {
     try {
