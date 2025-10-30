@@ -76,7 +76,7 @@ export const sendOTP = async (req, res) => {
         const emailTemplate = otpTemplate(otp);
 
         // Send Email using `mailsender.js`
-        await mailSender (emailId, "Your OTP Code", otpTemplate);
+        await mailSender (emailId, "Your OTP Code", emailTemplate);
 
 
         //return response successful
