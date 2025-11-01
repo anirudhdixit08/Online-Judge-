@@ -19,6 +19,7 @@
     "https": "^1.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.2",
+    "node-cron": "^4.2.1",
     "nodemailer": "^7.0.10",
     "otp-generator": "^4.0.1",
     "redis": "^5.9.0",
