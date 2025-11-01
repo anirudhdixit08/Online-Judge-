@@ -36,7 +36,7 @@ export const getDashboardStats = async (req, res) => {
 
 export const getRecentActivity = async (req, res) => {
     try {
-      const userId = req.user._id;
+      const userId = req.result._id;
   
       const recentSubmissions = await Submission.find({ userId: userId })
         .sort({ createdAt: -1 })
