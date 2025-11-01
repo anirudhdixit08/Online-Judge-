@@ -18,6 +18,24 @@ authRouter.post('/admin/register',isAuthorised,adminRegister)
 
 authRouter.delete('/delete',isAuthenticated,deleteProfile);
 
+authRouter.get('/check',isAuthenticated,(req,res) => {
+
+    // any error will already be handled by isAuthenticated Middleware.
+    
+    const reply = {
+        firstName : req.result.firstName,
+        userName : req.result.userName,
+        emailId : req.result.emailId,
+        _id : req.result._id
+    };
+
+    res.status(200).json({
+        user : reply,
+        message : 'Valid User!'
+    });
+
+})
+
 // authRouter.get('/get-profile',getProfile);  
 
 export default authRouter;
