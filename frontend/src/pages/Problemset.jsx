@@ -177,7 +177,7 @@ const Problemset = () => {
 
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Problemset</h1>
+      <h1 className="text-3xl font-bold mb-6">Problems</h1>
 
       {/* --- Filter Bar --- */}
       <div className="flex flex-wrap gap-4 mb-6">
