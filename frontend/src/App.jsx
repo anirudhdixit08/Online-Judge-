@@ -6,6 +6,7 @@ import { checkAuth } from "./slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar"; // 1. Import the Navbar
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -20,7 +21,7 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Homepage /> : <Navigate to="/signup" />} />
+        <Route path="/" element={isAuthenticated ? <Homepage /> : <LandingPage />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
       </Routes>
