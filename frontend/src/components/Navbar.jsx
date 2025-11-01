@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,11 +8,12 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   const [theme, setTheme] = useState(
     localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light'
   );
+
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -48,6 +48,16 @@ const Navbar = () => {
             <>
               <li><Link to="/problems">Problems</Link></li>
               <li><Link to="/contests">Contests</Link></li>
+              
+              {/* --- 2. ADD THE ADMIN-ONLY LINK --- */}
+              {/* This checks if the user object exists AND if user.role is 'admin' */}
+              {user?.role == 'admin' && (
+                <li>
+                  <Link to="/create-problem" className="text-warning font-bold">
+                    Create Problem
+                  </Link>
+                </li>
+              )}
             </>
           )}
         </ul>
@@ -74,7 +84,6 @@ const Navbar = () => {
         </button>
 
         {isAuthenticated ? (
-          // IF LOGGED IN: Show Profile Dropdown
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
@@ -84,7 +93,7 @@ const Navbar = () => {
                 </svg>
               </div>
             </label>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52">
+            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
                 <Link to="/profile">
                   User Profile
@@ -96,7 +105,6 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          // IF LOGGED OUT: Show Login/Sign Up Buttons
           <div className="flex items-center space-x-2 ml-2">
             <Link to="/login" className="btn btn-ghost btn-sm">
               Login
