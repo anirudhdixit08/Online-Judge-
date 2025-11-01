@@ -2,6 +2,7 @@ import { getLanguageById , submitBatch, submitToken} from "../utils/problemUtili
 import Problem from "../models/problemModel.js";
 import User from "../models/userModel.js";
 import Submission from "../models/submissionModel.js";
+import ProblemOfTheDay from '../models/potdModel.js';
 
 const getStatusDescription = (statusId) => {
     switch (statusId) {
@@ -296,3 +297,32 @@ export const problemSubmissions = async (req,res) => {
         res.status(500).send("Internal Server error : "+ error);
     }
 }
+
+export const getProblemOfTheDay = async (req, res) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const potd = await ProblemOfTheDay.findOne({ date: today })
+      .populate('problem');
+
+    if (!potd) {
+      return res.status(404).json({
+        success: false,
+        message: "Problem of the Day has not been set yet."
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      problem: potd.problem
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching Problem of the Day",
+      error: error.message
+    });
+  }
+};

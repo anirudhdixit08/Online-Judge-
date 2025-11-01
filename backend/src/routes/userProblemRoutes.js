@@ -2,7 +2,7 @@ import express from 'express';
 import { isAuthenticated, isAuthorised } from '../middleware/authMiddleware.js';
 import { createProblem, updateProblem, deleteProblem, 
     getProblemById, getAllProblems,getProblemByFilter,
-    getSolvedProblems, problemSubmissions
+    getSolvedProblems, problemSubmissions,getProblemOfTheDay
 } from '../controllers/userProblem.js';
 
 const problemRouter = express.Router();
@@ -17,6 +17,8 @@ problemRouter.put('/update/:id',isAuthorised,updateProblem);
 // the order matters here for get
 // static routes before dynamic routes
 problemRouter.get('/all-problems',isAuthenticated,getAllProblems);
+
+potdRouter.get('/potd', getProblemOfTheDay);
 
 problemRouter.get('/solved-problems',isAuthenticated,getSolvedProblems);
 
