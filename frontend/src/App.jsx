@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import Navbar from "./components/Navbar"; // 1. Import the Navbar
 import LandingPage from "./pages/LandingPage";
+import Footer from "./components/Footer";
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -25,6 +26,8 @@ function App() {
         <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
       </Routes>
+
+      <Footer />
     </>
   );
 }
