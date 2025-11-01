@@ -135,7 +135,7 @@ export const register = async (req,res) => {
 
         userValidator(req.body);
 
-        req.body.user = 'user'; // only users will be registered through this route
+        req.body.role = 'user'; // only users will be registered through this route
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password,salt);
@@ -150,7 +150,8 @@ export const register = async (req,res) => {
             firstName : user.firstName,
             userName : user.userName,
             emailId : user.emailId,
-            _id : user._id
+            _id : user._id,
+            role: 'user'
         }
 
         const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
@@ -241,7 +242,8 @@ export const login = async(req,res) =>{
             firstName : user.firstName,
             userName : user.userName,
             emailId : user.emailId,
-            _id : user._id
+            _id : user._id,
+            role: user.role
         }
 
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
