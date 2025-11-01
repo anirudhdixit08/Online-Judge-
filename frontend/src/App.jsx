@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import Navbar from "./components/Navbar"; // 1. Import the Navbar
 import LandingPage from "./pages/LandingPage";
 import Footer from "./components/Footer";
+import Problemset from "./pages/Problemset";
 
 function App() {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -25,6 +26,10 @@ function App() {
         <Route path="/" element={isAuthenticated ? <Homepage /> : <LandingPage />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
         <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />
+        <Route 
+            path="/problems" 
+            element={isAuthenticated ? <Problemset /> : <Navigate to="/login" />} 
+          />
       </Routes>
 
       <Footer />
