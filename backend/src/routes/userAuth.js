@@ -12,7 +12,7 @@ authRouter.post('/login',login);
 
 authRouter.post("/sendotp", sendOTP)
 
-authRouter.post('/logout',isAuthenticated,logout);
+authRouter.post('/logout',logout);
 
 authRouter.post('/admin/register',isAuthorised,adminRegister)
 

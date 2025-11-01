@@ -268,14 +268,14 @@ export const logout = async(req,res) =>{
             payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
         } catch (verifyError) {
             res.cookie('token', '', { maxAge: 0, httpOnly: true });
-            return res.status(401).send("Invalid token, logged out.");
+            return res.status(200).send("Invalid token, logged out.");
         }
         // console.log(payload);
 
         await redisClient.set(`token:${token}`,"blocked");
         await redisClient.expireAt(`token:${token}`,payload.exp);
         res.cookie("token",null,{expireAt:new Date(Date.now())});
-        res.status(503).send("User logged out succesfully!");
+        res.status(200).send("User logged out succesfully!");
     } catch (error) {
         res.status(401).send('Error : ',error);
     }

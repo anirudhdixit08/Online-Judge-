@@ -22,7 +22,7 @@ const app = express();
 const corsOptions = {
     origin: 'http://localhost:5173',
     credentials : true,
-    // optionsSuccessStatus: 200 // For legacy browser support
+    optionsSuccessStatus: 200 // For legacy browser support 
 };
   
   app.use(cors(corsOptions));
