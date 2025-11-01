@@ -9,6 +9,7 @@ import  RedisConnection,{redisClient}  from './config/redis.js';
 import authRouter from './routes/userAuth.js';
 import problemRouter from './routes/userProblemRoutes.js';
 import submitRouter from './routes/submitRoutes.js';
+import potdRouter from './routes/potdRoutes.js';
 
 import cors from 'cors';
 
@@ -32,6 +33,7 @@ app.use(cookieparser());
 app.use('/problem',problemRouter);
 app.use('/user',authRouter);
 app.use('/submission',submitRouter);
+app.use('/potd',potdRouter);
 
 async function InitializeConnection() {
     // console.log("ConnectDB called");
