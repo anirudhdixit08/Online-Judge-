@@ -33,3 +33,23 @@ export const getDashboardStats = async (req, res) => {
     });
   }
 };
+
+export const getRecentActivity = async (req, res) => {
+    try {
+      const userId = req.user._id;
+  
+      const recentSubmissions = await Submission.find({ userId: userId })
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .populate('problemId', 'title');
+  
+      res.status(200).json(recentSubmissions);
+  
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching recent activity",
+        error: error.message
+      });
+    }
+  };
