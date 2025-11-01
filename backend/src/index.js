@@ -9,6 +9,7 @@ import  RedisConnection,{redisClient}  from './config/redis.js';
 import authRouter from './routes/userAuth.js';
 import problemRouter from './routes/userProblemRoutes.js';
 import submitRouter from './routes/submitRoutes.js';
+import { startPotdJob } from './cron/potdJob.js';
 
 import cors from 'cors';
 
@@ -52,6 +53,9 @@ async function InitializeConnection() {
 }
 
 InitializeConnection();
+
+
+startPotdJob();
 
 
 

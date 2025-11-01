@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import Problem from '../models/problemModel.js';
 import ProblemOfTheDay from '../models/potdModel.js';
 
-const selectNewPOTD = async () => {
+export const selectNewPOTD = async () => {
   console.log('Running cron job: Selecting new Problem of the Day...');
   
   try {

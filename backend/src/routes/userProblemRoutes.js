@@ -18,7 +18,7 @@ problemRouter.put('/update/:id',isAuthorised,updateProblem);
 // static routes before dynamic routes
 problemRouter.get('/all-problems',isAuthenticated,getAllProblems);
 
-potdRouter.get('/potd', getProblemOfTheDay);
+problemRouter.get('/potd', getProblemOfTheDay);
 
 problemRouter.get('/solved-problems',isAuthenticated,getSolvedProblems);
 
