@@ -212,7 +212,7 @@ export const login = async(req,res) =>{
           }
         
         const isEmail = emailId ? true : false;
-        const user = await User.findOne({ $or: [{ emailId: emailId },{ userName: userName }]});
+        const user = await User.findOne({ $or: [{ emailId: emailId },{ userName: userName }]}).select('+role');;
         
         if (!user) {
             throw new Error("User not found!");
