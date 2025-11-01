@@ -8,49 +8,49 @@ package-lock.json
 
 # Environment variables
 .env
-.env.*     # for .env.dev, .env.prod, etc.
+# .env.*     # for .env.dev, .env.prod, etc.
 
 # Build / transpiled output
-dist/
-build/git add 
-coverage/
-.tmp/
-temp/
+# dist/
+# build/git add 
+# coverage/
+# .tmp/
+# temp/
 
 # # Logs and runtime files
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pm2.log
-debug.log
+# logs/
+# *.log
+# npm-debug.log*
+# yarn-debug.log*
+# yarn-error.log*
+# pm2.log
+# debug.log
 
 # # IDE / Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
+# .vscode/
+# .idea/
+# *.swp
+# *.swo
 
 # # OS generated files
-.DS_Store
-Thumbs.db
+# .DS_Store
+# Thumbs.db
 
 # # Docker
-docker-compose.override.yml
-*.pid
-*.seed
-*.pid.lock
+# docker-compose.override.yml
+# *.pid
+# *.seed
+# *.pid.lock
 
 # # Test related
-coverage/
-jest-html-reporters-*.html
-git init -b main
-Uploads / Submissions (if your judge stores them locally)
-uploads/
-submissions/
-temp_files/
-sandbox/
+# coverage/
+# jest-html-reporters-*.html
+# git init -b main
+# Uploads / Submissions (if your judge stores them locally)
+# uploads/
+# submissions/
+# temp_files/
+# sandbox/
 
 # # ------------------------------
 # # Optional (if using TypeScript)
