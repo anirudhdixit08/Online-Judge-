@@ -34,7 +34,7 @@ const LandingPage = () => {
       {/* Why CodeArena Section */}
       <div className="py-20 text-center bg-base-200">
         <h2 className="text-4xl md:text-5xl font-bold mb-16 text-neutral-content">
-          Why CodeArena?
+          Why AlgoPractise?
         </h2>
         <p className="text-lg mb-16 text-neutral-content">
           Everything you need to become a top-tier programmer.
