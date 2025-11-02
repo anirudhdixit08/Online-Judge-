@@ -2,7 +2,8 @@ import express from 'express';
 import { register, login,logout,
     adminRegister,deleteProfile,sendOTP } from '../controllers/userAuth.js';
 import { isAuthenticated,isAuthorised } from '../middleware/authMiddleware.js';
-import { getDashboardStats, getRecentActivity } from '../controllers/userDashboard.js';
+import { getDashboardStats, getRecentActivity,
+    getRecentCreatedProblems } from '../controllers/userDashboard.js';
 
 const authRouter = express.Router();
 
@@ -20,6 +21,8 @@ authRouter.post('/admin/register',isAuthorised,adminRegister)
 authRouter.get('/dashboard-stats',isAuthenticated,getDashboardStats);
 
 authRouter.get('/recent-activity',isAuthenticated,getRecentActivity);
+
+authRouter.get('/recent-created-problems', isAuthenticated, isAuthorised, getRecentCreatedProblems);
 
 authRouter.delete('/delete',isAuthenticated,deleteProfile);
 

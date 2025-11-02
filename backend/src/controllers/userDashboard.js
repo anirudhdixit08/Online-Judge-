@@ -1,5 +1,6 @@
 import Submission from '../models/submissionModel.js';
 import User from '../models/userModel.js';
+import Problem from '../models/problemModel.js';
 
 export const getDashboardStats = async (req, res) => {
   try {
@@ -52,6 +53,24 @@ export const getRecentActivity = async (req, res) => {
       res.status(500).json({
         success: false,
         message: "Error fetching recent activity",
+        error: error.message
+      });
+    }
+  };
+
+  export const getRecentCreatedProblems = async (req, res) => {
+    try {
+      const recentProblems = await Problem.find({})
+        .sort({ createdAt: -1 })
+        .limit(5)
+        .select('title difficulty createdAt');
+  
+      res.status(200).json(recentProblems);
+  
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching recent problems",
         error: error.message
       });
     }
