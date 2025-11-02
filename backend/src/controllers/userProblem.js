@@ -278,7 +278,7 @@ export const problemSubmissions = async (req,res) => {
     try {
         
         const userId = req.result._id;
-        const problemId = req.params.pid;
+        const problemId = req.params.id;
         if(!userId){
             return res.status(401).send("Unauthenticated: Please log in to see the submissions.");
         }
@@ -288,8 +288,8 @@ export const problemSubmissions = async (req,res) => {
 
         const ans = await Submission.find({userId,problemId});
 
-        if(!ans || ans.length==0 ){
-            res.status(200).send('No submissions found for this problem');
+        if (!ans || ans.length === 0) {
+            return res.status(200).json([]);
         }
 
         res.status(200).send(ans);
