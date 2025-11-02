@@ -3,7 +3,6 @@ import axiosClient from '../../utils/axiosClient';
 import ProblemList from './ProblemList';
 import ProblemForm from './ProblemForm';
 
-// This is the prompt component
 const SelectProblemPrompt = () => (
   <div className="flex h-full items-center justify-center rounded-lg bg-base-100 shadow-xl">
     <div className="text-center">
@@ -80,7 +79,6 @@ const ProblemManagement = () => {
   };
 
   return (
-    // Removed fixed height to let the page flow
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div className="lg:col-span-1 h-full min-h-[600px]">
         <ProblemList

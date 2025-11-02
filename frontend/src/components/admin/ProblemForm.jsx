@@ -33,75 +33,61 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
     defaultValues: defaultProblemValues
   });
 
-  // --- Field Array Hooks for Test Cases ---
   const { fields: visibleFields, append: appendVisible, remove: removeVisible } = useFieldArray({ control, name: "visibleTestCases" });
   const { fields: hiddenFields, append: appendHidden, remove: removeHidden } = useFieldArray({ control, name: "hiddenTestCases" });
 
-  // --- Effect for Edit Mode ---
   useEffect(() => {
     if (mode === 'edit' && problemId) {
       setLoading(true);
-      // Fetch the problem details using your getProblemById controller
       axiosClient.get(`/problem/${problemId}`)
         .then(response => {
           const dbProblem = response.data;
           
-          // Massage data to fit the form
           const massagedData = {
             ...dbProblem,
-            // Convert tags array back to comma-separated string
             tags: dbProblem.tags.join(', '),
             
-            // Ensure all 5 languages are present for startCode
             startCode: LANGUAGES.map(lang => {
               const found = dbProblem.startCode.find(s => s.language === lang);
               return found || { language: lang, initialCode: '' };
             }),
             
-            // Ensure all 5 languages are present for referenceCode
             referenceCode: LANGUAGES.map(lang => {
               const found = dbProblem.referenceCode.find(s => s.language === lang);
               return found || { language: lang, solutionCode: '' };
             })
           };
           
-          reset(massagedData); // Populate the form with fetched data
+          reset(massagedData); 
         })
         .catch(err => toast.error("Failed to load problem data."))
         .finally(() => setLoading(false));
     } else {
-      reset(defaultProblemValues); // Reset to defaults for 'create' mode
+      reset(defaultProblemValues);
     }
   }, [mode, problemId, reset]);
   
-  // --- Form Submit Handler (Create or Update) ---
   const onSubmit = async (data) => {
     setLoading(true);
 
-    // Transform data back to schema format
     const transformedData = {
       ...data,
-      // Convert comma-separated tags into an array
       tags: data.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-      // Filter out any empty code blocks
       startCode: data.startCode.filter(s => s.initialCode.trim() !== ''),
       referenceCode: data.referenceCode.filter(s => s.solutionCode.trim() !== '')
     };
 
     try {
       if (mode === 'create') {
-        // --- Call your createProblem controller ---
         const response = await axiosClient.post('/problem/create', transformedData);
-        toast.success(response.data); // "Problem Saved Successfully !"
+        toast.success(response.data); 
       } else {
-        // --- Call your updateProblem controller ---
         const response = await axiosClient.put(`/problem/update/${problemId}`, transformedData);
-        toast.success(response.data.message); // "Problem updated successfully!"
+        toast.success(response.data.message); 
       }
-      onSuccess(); // Tell parent to refresh list and change view
+      onSuccess(); 
     
     } catch (err) {
-      // Handle backend validation errors
       if (err.response && err.response.data && err.response.data.errors) {
         const errorMsg = `Validation Failed:\n${err.response.data.errors.join('\n')}`;
         toast.error(errorMsg, { duration: 6000 });
@@ -113,14 +99,13 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
     }
   };
 
-  // --- Delete Handler ---
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this problem? This action cannot be undone.")) {
       setLoading(true);
       try {
         await axiosClient.delete(`/problem/delete/${problemId}`);
         toast.success("Problem deleted successfully!");
-        onDelete(); // Tell parent to refresh
+        onDelete(); 
       } catch (err) {
         toast.error(err.response?.data || "Failed to delete problem.");
       } finally {
@@ -132,14 +117,12 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
   return (
     <div className="card bg-base-100 shadow-xl h-full flex flex-col">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full">
-        {/* --- Form Header --- */}
         <div className="p-4 border-b border-base-300">
           <h2 className="card-title">
             {mode === 'create' ? 'Create New Problem' : 'Edit Problem'}
           </h2>
         </div>
 
-        {/* --- Form Content (Scrollable) --- */}
         <div className="card-body p-6 overflow-y-auto">
           {loading && <span className="loading loading-spinner m-auto"></span>}
 
