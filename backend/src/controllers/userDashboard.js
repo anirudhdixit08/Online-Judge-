@@ -5,7 +5,7 @@ export const getDashboardStats = async (req, res) => {
   try {
     const userId = req.result._id;
 
-    const user = await User.findById(userId).select('solvedProblems');
+    const user = await User.findById(userId).select('solvedProblems createdProblems');
     const problemsSolved = user.solvedProblems.length;
 
     const totalSubmissions = await Submission.countDocuments({ userId: userId });
@@ -18,11 +18,14 @@ export const getDashboardStats = async (req, res) => {
       });
       acceptanceRate = (acceptedSubmissions / totalSubmissions) * 100;
     }
+    
+    const problemsCreated = user.createdProblems.length;
 
     res.status(200).json({
       problemsSolved,
       totalSubmissions,
       acceptanceRate: acceptanceRate.toFixed(1),
+      problemsCreated
     });
 
   } catch (error) {
