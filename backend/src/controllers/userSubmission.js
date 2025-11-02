@@ -27,7 +27,7 @@ export const submitCode = async (req,res) => {
             code,
             language,
             status :'pending',
-            totalTestcases : problem.hiddenTestCases.length 
+            totalTestcases : problem.hiddenTestCases.length + problem.visibleTestCases.length
         });
 
         // now submit this code to Judge0
@@ -92,7 +92,14 @@ export const submitCode = async (req,res) => {
                 await req.result.save();
             }
         }
-        return res.status(201).send(submittedResult);
+        const accepted = (status =='accepted');
+        res.status(201).json({
+            accepted,
+            totalTestcases : submittedResult.totalTestCases,
+            testCasesPassed,
+            runtime,
+            memory 
+        });
 
     } catch (error) {
             return res.status(500).send("Internal Sever Error : "+ error);
@@ -169,10 +176,94 @@ export const runCode = async (req,res) => {
             const resultTokens = submitResult.map((value)=> value.token);
             const testResults = await submitToken(resultTokens);
 
-            return res.status(201).send(testResults);
+            return res.status(201).json(testResults);
         // } 
 
     } catch (error) {
             return res.status(500).send("Internal Sever Error : "+ error);
+    }
+}
+
+export const runCustom = async (req, res) => {
+    try {
+        const problemId = req.params.id;
+        const userId = req.result._id;
+        const { code, language, customInput } = req.body;
+
+        if (!userId) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized: Please log in to run code."
+            });
+        }
+        if (!problemId || !code || !language || customInput === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: 'Code, language, problem ID, and customInput are required.'
+            });
+        }
+
+        const problem = await Problem.findById(problemId);
+        if (!problem) {
+            return res.status(404).json({
+                success: false,
+                message: 'Problem not found!'
+            });
+        }
+
+        const languageId = getLanguageById(language);
+        if (!languageId) {
+            return res.status(400).json({
+                success: false,
+                message: `Language '${language}' is not supported.`
+            });
+        }
+
+        const referenceSolution = problem.referenceCode.find(rc => rc.language === language);
+        if (!referenceSolution || !referenceSolution.solutionCode) {
+            return res.status(400).json({ 
+                success: false, 
+                message: `Reference solution for '${language}' not found. Cannot run custom test.` 
+            });
+        }
+        const refSubmission = {
+            source_code: referenceSolution.solutionCode,
+            language_id: languageId,
+            stdin: customInput
+        };
+
+        const refSubmitResult = await submitBatch([refSubmission]);
+        const refTestResult = (await submitToken([refSubmitResult[0].token]))[0];
+
+        if (refTestResult.status_id > 4) {
+            return res.status(400).json({
+                success: false,
+                message: "Custom input failed: The reference solution could not be executed.",
+                error: refTestResult.stderr ? Buffer.from(refTestResult.stderr, 'base64').toString('utf-8') : "Execution error"
+            });
+        }
+        
+        const expectedOutput = refTestResult.stdout;
+
+        const submissions = [{
+            source_code: code,
+            language_id: languageId,
+            stdin: customInput,
+            expected_output: expectedOutput
+        }];
+
+        const submitResult = await submitBatch(submissions);
+        const resultTokens = submitResult.map((value) => value.token);
+        const testResults = await submitToken(resultTokens);
+
+        return res.status(200).json(testResults);
+
+    } catch (error) {
+        console.error("Run Custom Code Error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+            error: error.message
+        });
     }
 }
