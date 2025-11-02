@@ -200,7 +200,7 @@ const LandingPage = () => {
             <h3 className="card-title text-xl font-semibold mb-3">Multi-Language Support</h3>
             <p className="text-sm text-base-content"> {/* <-- FIX */}
               Submit your solutions in a wide variety of popular programming
-              languages like C++, Java, Python, and more.
+              languages like C++, C, Javascript, Java, Python, and more.
             </p>
           </div>
         </div>
