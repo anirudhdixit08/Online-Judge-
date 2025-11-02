@@ -52,7 +52,7 @@ export const selectNewPOTD = async () => {
 };
 
 export const startPotdJob = () => {
-    cron.schedule('0 0 * * *', selectNewPOTD, {
+    cron.schedule('58 7 * * *', selectNewPOTD, {
     scheduled: true,
     timezone: "Asia/Kolkata"
     });

@@ -1,6 +1,6 @@
 import express from 'express';
 import { register, login,logout,
-    adminRegister,deleteProfile,sendOTP } from '../controllers/userAuth.js';
+    adminRegister,deleteProfile,sendOTP,getAllAdmins } from '../controllers/userAuth.js';
 import { isAuthenticated,isAuthorised } from '../middleware/authMiddleware.js';
 import { getDashboardStats, getRecentActivity,
     getRecentCreatedProblems } from '../controllers/userDashboard.js';
@@ -25,6 +25,8 @@ authRouter.get('/recent-activity',isAuthenticated,getRecentActivity);
 authRouter.get('/recent-created-problems', isAuthenticated, isAuthorised, getRecentCreatedProblems);
 
 authRouter.delete('/delete',isAuthenticated,deleteProfile);
+
+authRouter.get('/all-admins',isAuthorised,getAllAdmins);
 
 authRouter.get('/check',isAuthenticated,(req,res) => {
 

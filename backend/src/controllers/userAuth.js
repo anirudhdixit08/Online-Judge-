@@ -9,6 +9,7 @@ import { mailSender } from "../utils/mailSender.js";
 import OTP from "../models/otpModel.js";
 import otpGenerator from "otp-generator";
 import { otpTemplate } from "../mail_templates/emailVerificationTemplate.js";
+import { registrationTemplate } from "../mail_templates/registrationConfirmationTemplate.js";
 
 const generateOTP = () => crypto.randomInt(100000, 999999).toString();
 
@@ -158,6 +159,14 @@ export const register = async (req,res) => {
         res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
         // console.log(token);
 
+        try {
+            const subject = "Welcome to AlgoPractise!";
+            const body = registrationTemplate(user.firstName, user.role);
+            await mailSender(user.emailId, subject, body);
+        } catch (emailError) {
+            console.error("Welcome email failed to send:", emailError);
+        }
+
         res.status(201).json({
             user : reply,
             message : "User Registered Successfully"
@@ -185,14 +194,26 @@ export const adminRegister = async (req,res) => {
 
         req.body.password = hashedPassword;
 
+        req.body.role = 'admin';
+
         // will already throw if email is already present in duplicate.
         const user = await User.create(req.body); 
 
-        const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
-        res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
+        // const token = jwt.sign({emailId,userName,role:'admin'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
+        // res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
         // console.log(token);
 
-        res.status(201).send("User Registered Successfully");
+        // here no need to set cookies as another admin will be creating another admin.
+
+        try {
+            const subject = "Welcome to AlgoPractise (Admin)!";
+            const body = registrationTemplate(user.firstName, user.role);
+            await mailSender(user.emailId, subject, body);
+        } catch (emailError) {
+            console.error("Admin welcome email failed to send:", emailError);
+        }
+
+        res.status(201).send("Admin Registered Successfully");
 
     } catch (error) {
         res.status(400).send(`Error : ${error}`);
@@ -295,3 +316,17 @@ export const deleteProfile = async (req,res) => {
             res.status(500).send("Internal Server Error : " + error);
     }
 }
+
+export const getAllAdmins = async (req, res) => {
+    try {
+      // Find all users with the role 'admin'
+      const admins = await User.find({ role: 'admin' }).select('userName firstName lastName emailId');
+      res.status(200).json(admins);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Error fetching admins",
+        error: error.message
+      });
+    }
+  };

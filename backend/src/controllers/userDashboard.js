@@ -47,7 +47,11 @@ export const getRecentActivity = async (req, res) => {
         .limit(5)
         .populate('problemId', 'title');
   
-      res.status(200).json(recentSubmissions);
+      const validSubmissions = recentSubmissions.filter(sub => sub.problemId);
+    
+      res.status(200).json(validSubmissions);
+
+      // res.status(200).json(recentSubmissions);
   
     } catch (error) {
       res.status(500).json({

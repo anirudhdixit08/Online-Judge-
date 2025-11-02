@@ -27,6 +27,6 @@ problemRouter.get('/submissions/:id',isAuthenticated,problemSubmissions);
 problemRouter.get('/', isAuthenticated, getProblemByFilter);
 
 // this should be at last anythings that is unmatched by above will be this
-problemRouter.get('/:pid',isAuthenticated,getProblemById);
+problemRouter.get('/:id',isAuthenticated,getProblemById);
 
 export default problemRouter;
