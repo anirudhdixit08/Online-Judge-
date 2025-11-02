@@ -51,7 +51,7 @@ function App() {
             }
           />
           <Route
-            path="/manage-problems"
+            path="/admin"
             element={
               isAuthenticated && user?.role === "admin" ? (
                 <AdminPanel />

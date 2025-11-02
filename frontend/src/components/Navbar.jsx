@@ -53,7 +53,7 @@ const Navbar = () => {
               {/* This checks if the user object exists AND if user.role is 'admin' */}
               {user?.role == 'admin' && (
                 <li>
-                  <Link to="/manage-problems" className="text-warning font-bold">
+                  <Link to="/admin" className="text-warning font-bold">
                     Admin Panel
                   </Link>
                 </li>
