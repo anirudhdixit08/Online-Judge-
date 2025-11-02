@@ -31,7 +31,8 @@ authRouter.get('/check',isAuthenticated,(req,res) => {
         firstName : req.result.firstName,
         userName : req.result.userName,
         emailId : req.result.emailId,
-        _id : req.result._id
+        _id : req.result._id,
+        role : req.result.role
     };
 
     res.status(200).json({
