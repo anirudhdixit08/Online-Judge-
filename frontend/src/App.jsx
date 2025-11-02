@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import { checkAuth } from "./slices/authSlice";
+import ContestPage from "./pages/ContestPage";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -63,8 +64,20 @@ function App() {
           <Route
             path="/problem/:id"
             element={
-              (
+              isAuthenticated ? (
                 <ProblemPage />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/contests"
+            element={
+              isAuthenticated ? (
+                <ContestPage />
+              ) : (
+                <Navigate to="/" />
               )
             }
           />
