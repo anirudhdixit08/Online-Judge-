@@ -54,7 +54,7 @@ const Navbar = () => {
               {user?.role == 'admin' && (
                 <li>
                   <Link to="/create-problem" className="text-warning font-bold">
-                    Create Problem
+                    Admin Panel
                   </Link>
                 </li>
               )}
