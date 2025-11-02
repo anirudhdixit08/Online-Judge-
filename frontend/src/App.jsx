@@ -209,7 +209,7 @@ function App() {
 
       {/* 2. This 'main' tag will grow to fill all available space,
            pushing the footer down. */}
-      <main className="flex-grow">
+      <main className="grow">
         <Routes>
           <Route 
             path="/" 
