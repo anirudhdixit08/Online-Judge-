@@ -1,6 +1,7 @@
 import Problem from "../models/problemModel.js";
 import Submission from "../models/submissionModel.js";
 import { getLanguageById,submitBatch,submitToken } from "../utils/problemUtility.js";
+import { getStatusDescription } from "./userProblem.js";
 
 export const submitCode = async (req,res) => {
     try {
@@ -256,7 +257,24 @@ export const runCustom = async (req, res) => {
         const resultTokens = submitResult.map((value) => value.token);
         const testResults = await submitToken(resultTokens);
 
-        return res.status(200).json(testResults);
+        const userResult = testResults[0];
+
+        let error = null;
+        if (userResult.status_id === 6) { 
+            error = userResult.compile_output ? Buffer.from(userResult.compile_output, 'base64').toString('utf-8') : 'Compilation Error';
+        } else if (userResult.status_id > 4) { 
+            error = userResult.stderr ? Buffer.from(userResult.stderr, 'base64').toString('utf-8') : getStatusDescription(userResult.status_id);
+        }
+
+        // Build the clean response object
+        const response = {
+            status: getStatusDescription(userResult.status_id),
+            output: userResult.stdout,    
+            expectedOutput: expectedOutput,                      
+            error: error                                         
+        };
+
+        return res.status(200).json(response);
 
     } catch (error) {
         console.error("Run Custom Code Error:", error);

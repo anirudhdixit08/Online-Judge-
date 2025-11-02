@@ -4,8 +4,9 @@ import User from "../models/userModel.js";
 import Submission from "../models/submissionModel.js";
 import ProblemOfTheDay from '../models/potdModel.js';
 
-const getStatusDescription = (statusId) => {
+export const getStatusDescription = (statusId) => {
     switch (statusId) {
+        case 3: return "Accepted";
         case 6: return "Compilation Error";
         case 5: return "Time Limit Exceeded";
         case 4: return "Wrong Answer";
