@@ -1,5 +1,6 @@
 import Problem from "../models/problemModel.js";
 import Submission from "../models/submissionModel.js";
+import User from "../models/userModel.js";
 import { getLanguageById,submitBatch,submitToken } from "../utils/problemUtility.js";
 import { getStatusDescription } from "./userProblem.js";
 
@@ -175,8 +176,7 @@ export const submitCode = async (req,res) => {
                 totalRuntime += parseFloat(test.time);
                 maxMemory = Math.max(maxMemory, test.memory);
             } else {
-                // This is the FIRST failed test case
-                finalStatus = getStatusDescription(test.status_id); // Use your helper
+                finalStatus = getStatusDescription(test.status_id);
                 
                 if (test.status_id === 6) { // Compilation Error
                     finalErrorMessage = test.compile_output ? Buffer.from(test.compile_output, 'base64').toString('utf-8') : 'Compilation Error';
@@ -415,3 +415,92 @@ export const runCustom = async (req, res) => {
         });
     }
 }
+
+export const getAllSubmissions = async (req, res) => {
+  try {
+    const userId = req.result._id;
+
+    const { page = 1, limit = 20 } = req.query;
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const skip = (pageNum - 1) * limitNum;
+
+    const filter = { userId: userId };
+
+    const totalSubmissions = await Submission.countDocuments(filter);
+
+    if (totalSubmissions === 0) {
+      return res.status(200).json({
+        message: "No submissions found for this user.",
+        submissions: [],
+        currentPage: 1,
+        totalPages: 0,
+        totalSubmissions: 0
+      });
+    }
+
+    const submissions = await Submission.find(filter)
+      .sort({ createdAt: -1 }) 
+      .populate('problemId', 'title difficulty tags') 
+      .skip(skip)
+      .limit(limitNum);
+
+    const validSubmissions = submissions.filter(sub => sub.problemId);
+
+    res.status(200).json({
+      message: "Submissions fetched successfully",
+      submissions: validSubmissions,
+      currentPage: pageNum,
+      totalPages: Math.ceil(totalSubmissions / limitNum),
+      totalSubmissions
+    });
+
+  } catch (error) {
+    console.error("Error in getAllSubmissions:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message
+    });
+  }
+};
+
+export const getSubmissionById = async (req, res) => {
+    try {
+      const submissionId = req.params.id;
+      const userId = req.result._id;
+  
+      if (!submissionId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Submission ID is required." 
+        });
+      }
+
+      const submission = await Submission.findById(submissionId);
+  
+      if (!submission) {
+        return res.status(404).json({ 
+          success: false, 
+          message: "Submission not found." 
+        });
+      }
+  
+      if (submission.userId.toString() != userId) {
+        return res.status(403).json({ 
+          success: false, 
+          message: "You are not authorized to view this submission." 
+        });
+      }
+
+      res.status(200).json(submission);
+  
+    } catch (error) {
+      console.error("Get Submission By ID Error:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        error: error.message
+      });
+    }
+  };
