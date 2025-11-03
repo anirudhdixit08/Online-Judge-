@@ -48,6 +48,7 @@ const Navbar = () => {
             <>
               <li><Link to="/problems">Problems</Link></li>
               <li><Link to="/contests">Contests</Link></li>
+              <li><Link to="/submissions">Submissions</Link></li>
               
               {/* --- 2. ADD THE ADMIN-ONLY LINK --- */}
               {/* This checks if the user object exists AND if user.role is 'admin' */}

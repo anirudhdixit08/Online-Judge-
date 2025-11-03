@@ -10,12 +10,14 @@ import LandingPage from "./pages/LandingPage";
 import Problemset from "./pages/Problemset";
 import AdminPanel from "./pages/AdminPanel";
 import ProblemPage from "./pages/ProblemPage";
+import ContestPage from "./pages/ContestPage";
+import MySubmissions from "./pages/MySubmissions";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import { checkAuth } from "./slices/authSlice";
-import ContestPage from "./pages/ContestPage";
+
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -78,6 +80,17 @@ function App() {
                 <ContestPage />
               ) : (
                 <Navigate to="/" />
+              )
+            }
+          />
+
+          <Route
+            path="/submissions"
+            element={
+              isAuthenticated ? (
+                <MySubmissions />
+              ) : (
+                <Navigate to="/login" />
               )
             }
           />
