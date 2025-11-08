@@ -7,7 +7,7 @@ const Footer = () => {
     <footer className="footer footer-center p-10 bg-base-300 text-base-content">
       <aside>
         <Link to="/" className="text-3xl font-bold text-primary">
-          AlgoPractise
+          AlgoForge
         </Link>
         <p className="font-bold">
           Sharpening your coding skills.
@@ -37,7 +37,7 @@ const Footer = () => {
       </nav>
 
       <aside>
-        <p>Copyright © {new Date().getFullYear()} - All right reserved by AlgoPractise</p>
+        <p>Copyright © {new Date().getFullYear()} - All right reserved by AlgoForge</p>
       </aside>
     </footer>
   );

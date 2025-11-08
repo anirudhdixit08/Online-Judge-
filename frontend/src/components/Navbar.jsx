@@ -38,7 +38,7 @@ const Navbar = () => {
     <div className="navbar bg-base-100 shadow-md sticky top-0 z-50">
       <div className="navbar-start">
         <Link to="/" className="btn btn-ghost normal-case text-xl text-primary">
-          AlgoPractise
+          AlgoForge
         </Link>
       </div>
 

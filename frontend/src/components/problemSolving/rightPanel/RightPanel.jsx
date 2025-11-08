@@ -15,7 +15,7 @@ const RightPanel = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const [code, setCode] = useState('');
   const [boilerplate, setBoilerplate] = useState(''); // To reset the editor
-  const [activeTab, setActiveTab] = useState('testcase'); // 'testcase', 'custom', 'result'
+  const [activeTab, setActiveTab] = useState('code'); // 'testcase', 'custom', 'result'
   const [customInput, setCustomInput] = useState('');
   
   const [runLoading, setRunLoading] = useState(false);
