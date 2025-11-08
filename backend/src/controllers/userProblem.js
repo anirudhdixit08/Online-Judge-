@@ -3,6 +3,7 @@ import Problem from "../models/problemModel.js";
 import User from "../models/userModel.js";
 import Submission from "../models/submissionModel.js";
 import ProblemOfTheDay from '../models/potdModel.js';
+import Editorial from "../models/editorialModel.js";
 
 export const getStatusDescription = (statusId) => {
     switch (statusId) {
@@ -181,18 +182,30 @@ export const getProblemById = async (req,res) => {
     try {
         
         if(!id){
-            return res.status(400).send("ID is missing");
+            return res.status(400).json({ success: false, message: "ID is missing" });
         }
 
-        const prob = await Problem.findById(id);
+        const prob = await Problem.findById(id).toObject();
         if(!prob){
-            return res.status(400).send("Invalid problem id");
+            return  res.status(404).json({ success: false, message: "Invalid problem id" });
+        }
+
+        const editorial = await Editorial.findOne({problemId});
+        if(editorial){
+            prob.secureUrl = editorial.secureUrl;
+            prob.cloudinaryPublicId = editorial.cloudinaryPublicId;
+            prob.thumbnailUrl = editorial.thumbnailUrl;
+            prob.duration = editorial.duration;
         }
 
         return res.status(200).send(prob);
 
     } catch (error) {
-        return res.status(400).send("Error : + ",error);
+        return res.status(500).json({
+            success: false,
+            message: "Error fetching problem",
+            error: error.message 
+        });
     }
 }
 
