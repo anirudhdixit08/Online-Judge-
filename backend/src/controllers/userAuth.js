@@ -156,7 +156,7 @@ export const register = async (req,res) => {
         }
 
         const token = jwt.sign({emailId,userName,role:'user'},process.env.JWT_SECRET_KEY,{expiresIn: 60*60});
-        res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
+        res.cookie('token',token,{maxAge : 24*60*60*1000}); // here millisecond parameter
         // console.log(token);
 
         try {
@@ -267,7 +267,7 @@ export const login = async(req,res) =>{
             role: user.role
         }
 
-        res.cookie('token',token,{maxAge : 60*60*1000}); // here millisecond parameter
+        res.cookie('token',token,{maxAge : 24*60*60*1000}); // here millisecond parameter
         res.status(200).json({
             user : reply,
             message : "LogIn Successful !"
