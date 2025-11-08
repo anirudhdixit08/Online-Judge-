@@ -10,7 +10,7 @@ const submitCodeRateLimiter = async (req, res, next) => {
       
       if (exists) {
         return res.status(429).json({
-          error: 'Please wait 10 seconds before submitting again'
+          error: 'Please wait 5 seconds before submitting again'
         });
       }
   
