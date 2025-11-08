@@ -1,7 +1,7 @@
 export const registrationTemplate = (name, role) => {
     const is_admin = role === 'admin';
     
-    const welcomeTitle = is_admin ? "Admin Account Created!" : "Welcome to AlgoPractise!";
+    const welcomeTitle = is_admin ? "Admin Account Created!" : "Welcome to AlgoForge!";
     
     const welcomeMessage = is_admin 
       ? "Your <strong>Admin Account</strong> has been successfully created. You can now log in and access the admin panel and all site management tools."

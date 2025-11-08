@@ -67,13 +67,13 @@ export const otpTemplate = (otp) => {
 	<body>
 		<div class="container">
 			
-			<div class="message">OTP Verification Email from AlgoUniversity</div>
+			<div class="message">OTP Verification Email from AlgoForge</div>
 			<div class="body">
 				<p>Hey there,</p>
-				<p>Welcome to AlgoPractise! We're excited to have you on board. To get started with your account, please verify your identity with the OTP (One-Time Password) below:</p>
+				<p>Welcome to AlgoForge! We're excited to have you on board. To get started with your account, please verify your identity with the OTP (One-Time Password) below:</p>
 				<h2 class="highlight">${otp}</h2>
 				<p>This OTP is valid for the next 5 minutes. If you didn’t request this, you can safely ignore this email.</p>
-				<p>Once verified, you'll be able to manage your transactions, track your finances, and explore all features of Digit Ledger.</p>
+				<p>Once verified, you'll be able to solve questions, track your skills, and explore all features of Algo Forge.</p>
 			</div>
 			<div class="support">Need help? Reach us anytime at <a href="anirudhdixit.sjknp@gmail.com">anirudhdixit.sjknp@gmail.com</a>.</div>
 		</div>
