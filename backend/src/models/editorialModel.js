@@ -4,12 +4,12 @@ const {Schema} = mongoose;
 const editorialSchema = new Schema({
     problemId: {
         type: Schema.Types.ObjectId,
-        ref: 'problem',
+        ref: 'Problem',
         required: true
     },
     userId: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: 'User',
     required: true,
    },
    cloudinaryPublicId: {
@@ -34,6 +34,6 @@ const editorialSchema = new Schema({
 
 
 
-const Editorial = mongoose.model("solutionVideo",editorialSchema);
+const Editorial = mongoose.model("Editorial",editorialSchema);
 
 export default Editorial;

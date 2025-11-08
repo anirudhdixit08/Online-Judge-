@@ -44,7 +44,7 @@ export const generateUploadSignature = async (req,res) => {
             public_id : publicId,
             api_key : process.env.CLOUDINARY_API_KEY,
             cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
-            upload_url : `https://api.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`
+            upload_url : `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/video/upload`
         });
     } catch (error) {
         res.status(500).json({
@@ -88,7 +88,7 @@ export const saveMetaData = async (req,res) => {
         }
 
         const thumbnailUrl = cloudinary.url(cloudinaryResource.public_id, {
-            resource_type : 'image',
+            resource_type : 'video',
             transformation : [
                 {width : 400, height : 225, crop : 'fill'},
                 {quality : 'auto'},
@@ -98,7 +98,7 @@ export const saveMetaData = async (req,res) => {
         });
 
         // create and save
-        const editorial = new Editorial({
+        const editorial = await Editorial.create({
             problemId,
             userId,
             cloudinaryPublicId,
@@ -106,7 +106,6 @@ export const saveMetaData = async (req,res) => {
             duration : cloudinaryResource.duration || duration,
             thumbnailUrl
         });
-        await editorial.save();
 
         res.status(201).json({
             message : 'Editorial Solution Uploaded Successfully!',
@@ -130,26 +129,60 @@ export const deleteEditorial = async (req,res) => {
     try {
         
         const {videoId } = req.params;
-        const userId = req.result_id;
+        const userId = req.result._id;
 
-        const video = await Editorial.findByIdAndDelete(videoId);
+        const video = await Editorial.findOne(videoId);
         
         if(!video){
-            return res.status(404).json({error : 'Video Not Found !'});
+            console.log('jo');
+            return res.status(404).json({success: false, message: 'Video Not Found !'});
         }
 
-        if (video.userId.toString() !== userId) {
-            await Editorial.create(video); 
-            return res.status(403).json({error: 'You are not authorized to delete this editorial.'});
+        if (video.userId.toString() != userId) {
+            return res.status(403).json({success: false, message: 'You are not authorized to delete this editorial.'});
         }
 
-        await cloudinary.uploader.destroy(video.cloudinaryPublicId,{resource_type : 'video', 
+        const deleteResult = await cloudinary.uploader.destroy(video.cloudinaryPublicId,{
+            resource_type : 'video', 
             invalidate : true
         });
+
+        console.log(deleteResult.result);
+
+        if (deleteResult.result !== 'ok' && deleteResult.result !== 'not found') {
+            console.warn(
+                `Cloudinary delete for ${video.cloudinaryPublicId} returned: ${deleteResult.result}. Proceeding with DB delete.`
+            );
+        }
+        await Editorial.findByIdAndDelete(video._id);
 
         res.status(200).json({message : "Video Deleted Successfully!"})
 
     } catch (error) {
         res.status(500).json({error,message:"Failed to delete editorial!"});
+    }
+}
+
+export const getEditorialForProblem = async (req,res) => {
+    try {
+        const { problemId } = req.params;
+
+        if (!problemId) {
+            return res.status(400).json({ error: "Problem ID is required." });
+        }
+
+        const editorial = await Editorial.findOne({ problemId })
+            .populate('userId', 'userName');
+
+        if (!editorial) {
+            return res.status(404).json({ error: "No editorial found for this problem." });
+        }
+        res.status(200).json(editorial);
+
+    } catch (error) {
+        res.status(500).json({
+            error, 
+            message: "Failed to fetch editorial!"
+        });
     }
 }

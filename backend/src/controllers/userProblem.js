@@ -185,10 +185,12 @@ export const getProblemById = async (req,res) => {
             return res.status(400).json({ success: false, message: "ID is missing" });
         }
 
-        const prob = await Problem.findById(id).toObject();
+        const prob = await Problem.findById(id);
         if(!prob){
             return  res.status(404).json({ success: false, message: "Invalid problem id" });
         }
+
+        const problemId = id;
 
         const editorial = await Editorial.findOne({problemId});
         if(editorial){
