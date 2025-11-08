@@ -23,7 +23,7 @@ const WelcomeBanner = () => {
         className="text-2xl md:text-3xl font-bold leading-tight"
       >
         Welcome back,{" "}
-        <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        <span className="bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
           {displayName}
         </span>
         !
