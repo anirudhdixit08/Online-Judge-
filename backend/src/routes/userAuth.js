@@ -22,7 +22,7 @@ authRouter.get('/dashboard-stats',isAuthenticated,getDashboardStats);
 
 authRouter.get('/recent-activity',isAuthenticated,getRecentActivity);
 
-authRouter.get('/recent-created-problems', isAuthenticated, isAuthorised, getRecentCreatedProblems);
+authRouter.get('/recent-created-problems',isAuthorised, getRecentCreatedProblems);
 
 authRouter.delete('/delete',isAuthenticated,deleteProfile);
 

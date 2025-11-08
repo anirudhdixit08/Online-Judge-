@@ -9,7 +9,9 @@ import  RedisConnection,{redisClient}  from './config/redis.js';
 import authRouter from './routes/userAuth.js';
 import problemRouter from './routes/userProblemRoutes.js';
 import submitRouter from './routes/submitRoutes.js';
+import editorialRouter from './routes/editorialRoutes.js';
 import { startPotdJob } from './cron/potdJob.js';
+import connectCloudinary from './config/cloudinary.js';
 
 import cors from 'cors';
 
@@ -33,6 +35,7 @@ app.use(cookieparser());
 app.use('/problem',problemRouter);
 app.use('/user',authRouter);
 app.use('/submission',submitRouter);
+app.use('/editorial',editorialRouter);
 
 async function InitializeConnection() {
     // console.log("ConnectDB called");
@@ -43,7 +46,7 @@ async function InitializeConnection() {
 
     console.log('Starting Connection!');
 
-    await Promise.all([DBConnection(),RedisConnection(redisClient)]);
+    await Promise.all([DBConnection(),RedisConnection(redisClient),connectCloudinary()]);
     console.log("Connection to Mongo and Redis Established!");
 
     app.listen(process.env.PORT, ()=>{
