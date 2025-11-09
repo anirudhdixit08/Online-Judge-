@@ -296,6 +296,8 @@ export const logout = async(req,res) =>{
         // console.log(payload);
 
         await redisClient.set(`token:${token}`,"blocked");
+        let x = await redisClient.get(`token:${token}`);
+        console.log(x);
         await redisClient.expireAt(`token:${token}`,payload.exp);
         res.cookie("token",null,{expireAt:new Date(Date.now())});
         res.status(200).send("User logged out succesfully!");

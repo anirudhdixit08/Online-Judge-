@@ -46,8 +46,9 @@ async function InitializeConnection() {
 
     console.log('Starting Connection!');
 
-    await Promise.all([DBConnection(),RedisConnection(redisClient),connectCloudinary()]);
-    console.log("Connection to Mongo and Redis Established!");
+    // await Promise.all([DBConnection(),RedisConnection(redisClient),connectCloudinary()]);
+    await Promise.all([DBConnection(),RedisConnection(),connectCloudinary()]);
+    console.log("Connection to Mongo,Cloudinary and Redis Established!");
 
     app.listen(process.env.PORT, ()=>{
         console.log(`Server listening on Port ${process.env.PORT}`);

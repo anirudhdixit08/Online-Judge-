@@ -26,7 +26,7 @@ export const isAuthenticated = async(req,res,next) => {
             throw new Error("User does not exist");
         }
 
-        const isBlocked = await redisClient.exists(`token;${token}`);
+        const isBlocked = await redisClient.exists(`token:${token}`);
         console.log("is blocked in redis : "+isBlocked);
         if(isBlocked){
             console.log("Token found in redis blocked list");
@@ -41,6 +41,7 @@ export const isAuthenticated = async(req,res,next) => {
         res.status(401).send('Error : '+error);
     }
 }
+
 export const isAuthorised = async(req,res,next) => {
     try {
         const {token} = req.cookies;
@@ -65,7 +66,7 @@ export const isAuthorised = async(req,res,next) => {
             throw new Error("User does not exist");
         }
 
-        const isBlocked = await redisClient.exists(`token;${token}`);
+        const isBlocked = await redisClient.exists(`token:${token}`);
         console.log("is blocked in redis : "+isBlocked);
         if(isBlocked){
             console.log("Token found in redis blocked list");
