@@ -24,6 +24,12 @@ const RightPanel = () => {
   const [submitResult, setSubmitResult] = useState(null);
 
   useEffect(() => {
+
+    setRunResult(null);
+    setSubmitResult(null);
+    setCustomInput('');
+    setActiveTab('code');
+
     const fetchBoilerplate = async () => {
       try {
         const response = await axiosClient.get(`/problem/${problemId}`);
@@ -44,6 +50,7 @@ const RightPanel = () => {
     setSubmitResult(null);
     try {
       const response = await axiosClient.post(`/submission/run/${problemId}`, { code, language: selectedLanguage });
+      console.log(response);
       setRunResult({ type: 'run', data: response.data });
       setActiveTab('result'); 
     } catch (err) {
