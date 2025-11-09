@@ -5,18 +5,34 @@ import Submission from "../models/submissionModel.js";
 import ProblemOfTheDay from '../models/potdModel.js';
 import Editorial from "../models/editorialModel.js";
 
+// export const getStatusDescription = (statusId) => {
+//     switch (statusId) {
+//         case 3: return "Accepted";
+//         case 6: return "Compilation Error";
+//         case 5: return "Time Limit Exceeded";
+//         case 4: return "Wrong Answer";
+//         case 7: case 8: case 9: case 10: case 11: case 12:
+//             return "Runtime Error";
+//         case 13: case 14:
+//             return "System Error";
+//         default:
+//             return "Unknown Error";
+//     }
+// }
+
 export const getStatusDescription = (statusId) => {
     switch (statusId) {
-        case 3: return "Accepted";
-        case 6: return "Compilation Error";
-        case 5: return "Time Limit Exceeded";
-        case 4: return "Wrong Answer";
+        case 3: return "accepted";
+        case 1: return "pending";
+        case 6: return "error"; // "Compilation Error" is a type of 'error'
+        case 5: return "error"; // "Time Limit Exceeded" is a type of 'error'
+        case 4: return "wrong answer"; // <-- Must be lowercase
         case 7: case 8: case 9: case 10: case 11: case 12:
-            return "Runtime Error";
+            return "error"; // "Runtime Error" is a type of 'error'
         case 13: case 14:
-            return "System Error";
+            return "error"; // "System Error" is a type of 'error'
         default:
-            return "Unknown Error";
+            return "error";
     }
 }
 

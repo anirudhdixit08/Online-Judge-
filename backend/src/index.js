@@ -12,6 +12,7 @@ import submitRouter from './routes/submitRoutes.js';
 import editorialRouter from './routes/editorialRoutes.js';
 import { startPotdJob } from './cron/potdJob.js';
 import connectCloudinary from './config/cloudinary.js';
+import aiRouter from './routes/aiRouter.js';
 
 import cors from 'cors';
 
@@ -36,6 +37,7 @@ app.use('/problem',problemRouter);
 app.use('/user',authRouter);
 app.use('/submission',submitRouter);
 app.use('/editorial',editorialRouter);
+app.use('/ai',aiRouter);
 
 async function InitializeConnection() {
     // console.log("ConnectDB called");
