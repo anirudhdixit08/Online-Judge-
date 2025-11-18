@@ -12,6 +12,10 @@ import AdminPanel from "./pages/AdminPanel";
 import ProblemPage from "./pages/ProblemPage";
 import ContestPage from "./pages/ContestPage";
 import MySubmissions from "./pages/MySubmissions";
+import ProfilePage from "./pages/ProfilePage";
+import ChangePassword from "./pages/ChangePassword";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -94,6 +98,23 @@ function App() {
               )
             }
           />
+
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? <ProfilePage /> : <Navigate to="/login" />
+            }
+          />
+
+          <Route
+            path="/change-password"
+            element={
+              isAuthenticated ? <ChangePassword /> : <Navigate to="/login" />
+            }
+          />
+
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </main>
 

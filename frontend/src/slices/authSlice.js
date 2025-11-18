@@ -63,6 +63,39 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+export const getProfile = createAsyncThunk(
+  'auth/getProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.get('/user/profile');
+      return response.data;
+    } catch (error) {
+      const message = error.response?.data?.message || 
+                      error.response?.data?.replace('Error : Error: ', '') ||
+                      error.response?.data || 
+                      error.message || 
+                      'Failed to fetch profile';
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateProfile',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.patch('/user/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', 
+        },
+      });
+      return response.data; 
+    } catch (error) {
+      const message = error.response?.data?.message || 'Profile update failed';
+      return rejectWithValue(message);
+    }
+  }
+);
 
 
 export const sendOTP = createAsyncThunk(
@@ -198,6 +231,38 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = !!action.payload;
+        state.user = action.payload; // <-- Populates the user state
+        state.error = null;
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = false; // If we can't get profile, assume not auth'd
+        state.user = null;
+        state.error = action.payload;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user; // Update Redux state immediately
+        state.success = action.payload.message;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = null;
       });
   }
 });
