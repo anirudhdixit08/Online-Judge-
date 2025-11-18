@@ -40,22 +40,22 @@ app.use('/editorial',editorialRouter);
 app.use('/ai',aiRouter);
 
 async function InitializeConnection() {
-    // console.log("ConnectDB called");
-    // await DBConnection();
-
-    // console.log("ConnectRedis called");
-    // await RedisConnection();
-
     console.log('Starting Connection!');
 
-    // await Promise.all([DBConnection(),RedisConnection(redisClient),connectCloudinary()]);
-    await Promise.all([DBConnection(),RedisConnection(),connectCloudinary()]);
-    console.log("Connection to Mongo,Cloudinary and Redis Established!");
+    try {
+        await Promise.all([DBConnection(), RedisConnection(), connectCloudinary()]);
+        
+        console.log("Connection to Mongo, Cloudinary and Redis Established!");
 
-    app.listen(process.env.PORT, ()=>{
-        console.log(`Server listening on Port ${process.env.PORT}`);
-    });
-    
+        app.listen(process.env.PORT, () => {
+            console.log(`Server listening on Port ${process.env.PORT}`);
+        });
+
+    } catch (error) {
+        console.error("CRITICAL: Initialization failed. Server did not start.");
+        console.error(error);
+        process.exit(1); 
+    }
 }
 
 InitializeConnection();

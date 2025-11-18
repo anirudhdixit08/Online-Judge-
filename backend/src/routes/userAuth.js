@@ -1,18 +1,22 @@
 import express from 'express';
 import { register, login,logout,
-    adminRegister,deleteProfile,sendOTP,getAllAdmins } from '../controllers/userAuth.js';
+    adminRegister,deleteProfile,sendOTP,getAllAdmins,getProfile,
+updateProfile,changePassword,forgotPassword,resetPassword } from '../controllers/userAuth.js';
 import { isAuthenticated,isAuthorised } from '../middleware/authMiddleware.js';
 import { getDashboardStats, getRecentActivity,
     getRecentCreatedProblems } from '../controllers/userDashboard.js';
 
+import upload from '../middleware/multerMiddleware.js';
+
 const authRouter = express.Router();
 
 
-authRouter.post('/register',register);
+// authRouter.post('/register',register);
+authRouter.post('/register', upload.single('profilePhoto'), register);
 
 authRouter.post('/login',login);
 
-authRouter.post("/sendotp", sendOTP)
+authRouter.post("/sendotp",upload.none() ,sendOTP)
 
 authRouter.post('/logout',logout);
 
@@ -37,7 +41,8 @@ authRouter.get('/check',isAuthenticated,(req,res) => {
         userName : req.result.userName,
         emailId : req.result.emailId,
         _id : req.result._id,
-        role : req.result.role
+        role : req.result.role,
+        profilePhoto: req.result.profilePhoto
     };
 
     res.status(200).json({
@@ -47,6 +52,13 @@ authRouter.get('/check',isAuthenticated,(req,res) => {
 
 })
 
-// authRouter.get('/get-profile',getProfile);  
+authRouter.get('/profile',isAuthenticated,getProfile); 
+
+authRouter.patch('/update', isAuthenticated, upload.single('profilePhoto'), updateProfile);
+
+authRouter.post('/change-password', isAuthenticated, changePassword);
+
+authRouter.post('/forgot-password', forgotPassword);
+authRouter.post('/reset-password', resetPassword);
 
 export default authRouter;

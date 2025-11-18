@@ -26,6 +26,10 @@ const userSchema = new Schema(
       minlength: [3, "Last name must be at least 3 characters long"],
       maxlength: [30, "Last name cannot exceed 30 characters"],
       trim: true,
+    },profilePhoto: {
+      type: String, // Just the URL to the photo
+      trim: true,
+      // No 'default' key needed
     },
     emailId: {
       type: String,

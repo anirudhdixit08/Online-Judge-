@@ -17,5 +17,6 @@ import mongoose from "mongoose";
     console.log("DB Connection established");
   } catch (error) {
     console.log("DB Connection error " + error);
+    throw error;
   }
 };
