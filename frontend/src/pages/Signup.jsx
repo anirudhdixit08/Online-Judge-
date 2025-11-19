@@ -256,7 +256,6 @@ const SignUp = () => {
             </>
           )}
 
-          {/* `isOtpSent` is read from Redux */}
           {isOtpSent && (
             <div className="form-control">
               <label className="label" htmlFor="otp">
@@ -276,7 +275,6 @@ const SignUp = () => {
             </div>
           )}
 
-          {/* Buttons read from global auth and local otp loading states */}
           <div className="form-control mt-6">
             {isOtpSent ? (
               <button

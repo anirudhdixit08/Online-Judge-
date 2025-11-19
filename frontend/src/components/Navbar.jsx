@@ -36,8 +36,16 @@ const Navbar = () => {
   return (
     <div className="navbar bg-base-100 shadow-md sticky top-0 z-50">
       <div className="navbar-start">
-        <Link to="/" className="btn btn-ghost normal-case text-xl text-primary">
-          AlgoForge
+        <Link 
+          to="/" 
+          className="btn btn-ghost normal-case text-xl text-primary flex items-center space-x-2"
+        >
+          <img 
+            src="/logo.svg" 
+            alt="AlgoForge Logo" 
+            className="h-14 w-14" 
+          />
+          <span>AlgoForge</span>
         </Link>
       </div>
 
@@ -55,8 +63,6 @@ const Navbar = () => {
                 <Link to="/submissions">Submissions</Link>
               </li>
 
-              {/* --- 2. ADD THE ADMIN-ONLY LINK --- */}
-              {/* This checks if the user object exists AND if user.role is 'admin' */}
               {user?.role == "admin" && (
                 <li>
                   <Link to="/admin" className="text-warning font-bold">
@@ -70,14 +76,12 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end">
-        {/* --- Theme Toggle (Always Visible) --- */}
         <button
           onClick={handleThemeToggle}
           className="btn btn-ghost btn-circle"
           aria-label="Toggle theme"
         >
           {theme === "light" ? (
-            // Moon Icon
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -93,7 +97,6 @@ const Navbar = () => {
               />
             </svg>
           ) : (
-            // Sun Icon
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -115,17 +118,13 @@ const Navbar = () => {
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
-                {/* --- CHANGED SECTION --- */}
-                {/* Use optional chaining 'user?.profilePhoto' for safety */}
                 {user?.profilePhoto ? (
-                  // If user has a profile photo, display it
                   <img
                     src={user.profilePhoto}
                     alt={`${user.userName}'s profile`}
                     className="w-10 rounded-full object-cover"
                   />
                 ) : (
-                  // Otherwise, show the default SVG
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-10 w-10"
