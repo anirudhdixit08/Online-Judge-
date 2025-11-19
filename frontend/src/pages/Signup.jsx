@@ -122,7 +122,6 @@ const SignUp = () => {
             Create Your Account
           </h2>
 
-          {/* Display combined error/success messages */}
           {displayError && (
             <div className="alert alert-error shadow-lg mb-4">
               <div>
@@ -140,10 +139,8 @@ const SignUp = () => {
             </div>
           )}
 
-          {/* `isOtpSent` is now read from Redux */}
           {!isOtpSent && (
             <>
-              {/* --- First Name --- */}
               <div className="form-control">
                 <label className="label" htmlFor="firstName">
                   <span className="label-text">First Name</span>
@@ -160,7 +157,6 @@ const SignUp = () => {
                 )}
               </div>
 
-              {/* --- Last Name --- */}
               <div className="form-control">
                 <label className="label" htmlFor="lastName">
                   <span className="label-text">Last Name</span>
@@ -177,7 +173,6 @@ const SignUp = () => {
                 )}
               </div>
 
-              {/* --- Username --- */}
               <div className="form-control">
                 <label className="label" htmlFor="userName">
                   <span className="label-text">Username</span>
@@ -194,7 +189,6 @@ const SignUp = () => {
                 )}
               </div>
 
-              {/* --- Email --- */}
               <div className="form-control">
                 <label className="label" htmlFor="emailId">
                   <span className="label-text">Email</span>
@@ -211,7 +205,6 @@ const SignUp = () => {
                 )}
               </div>
 
-              {/* --- Password with Toggle --- */}
               <div className="form-control">
                 <label className="label" htmlFor="password">
                   <span className="label-text">Password</span>
@@ -296,7 +289,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* --- Link to Login --- */}
           <div className="text-center mt-4">
             <span className="text-sm">
               Already have an account?{' '}

@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-base-200 text-base-content">
-      {/* Hero Section */}
-      {/* bg-base-300 is often dark enough, but text-base-content is safer */}
       <div className="hero min-h-[70vh] bg-base-300">
         <div className="hero-content text-center">
           <div className="max-w-4xl py-12">

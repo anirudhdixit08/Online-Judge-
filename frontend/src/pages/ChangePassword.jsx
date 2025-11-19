@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// Import your custom axios client
 import axiosClient from '../utils/axiosClient'; 
 
-// Icons
 const EyeIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-500 hover:text-primary transition-colors">
     <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
@@ -59,9 +57,7 @@ const ChangePassword = () => {
         }
 
         try {
-            // REPLACED: Standard axios with axiosClient
-            // 1. No http://localhost:3000 (Handled by baseURL)
-            // 2. No manual headers (Handled by withCredentials/interceptor)
+
             const res = await axiosClient.post('/user/change-password', {
                 oldPassword: formData.oldPassword,
                 newPassword: formData.newPassword

@@ -66,7 +66,7 @@ const SubmissionsTab = ({ problemId }) => {
     <>
       <div className="overflow-x-auto">
         <table className="table w-full">
-          {/* --- 1. UPDATED TABLE HEAD --- */}
+          {/*UPDATED TABLE HEAD*/}
           <thead>
             <tr>
               <th>Status</th>
@@ -84,12 +84,10 @@ const SubmissionsTab = ({ problemId }) => {
                 className="hover cursor-pointer"
                 onClick={() => handleViewCode(sub)}
               >
-                {/* --- 2. UPDATED TABLE BODY --- */}
                 <td className={`font-semibold ${getStatusColor(sub.status)}`}>
                   {sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
                 </td>
                 <td>{sub.language}</td>
-                {/* Convert runtime (seconds) to ms */}
                 <td>{(sub.runtime * 1000).toFixed(0)} ms</td>
                 <td>{sub.memory.toFixed(1)} KB</td>
                 <td>{sub.testCasesPassed} / {sub.totalTestCases}</td>
@@ -100,7 +98,6 @@ const SubmissionsTab = ({ problemId }) => {
         </table>
       </div>
 
-      {/* --- 3. UPDATED MODAL --- */}
       {selectedSubmission && (
         <div className="modal modal-open">
           <div className="modal-box w-11/12 max-w-4xl">
@@ -108,7 +105,6 @@ const SubmissionsTab = ({ problemId }) => {
               Submission Details
             </h3>
             
-            {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
               <div className="stat p-0">
                 <div className="stat-title">Status</div>

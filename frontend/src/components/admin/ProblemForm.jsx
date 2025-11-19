@@ -1,14 +1,10 @@
-// src/components/admin/ProblemForm.jsx
-
 import React, { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import axiosClient from '../../utils/axiosClient';
 import { toast } from 'react-hot-toast';
 
-// Define the 5 languages from your schema
 const LANGUAGES = ['c++', 'java', 'python', 'c', 'javascript'];
 
-// Define default values to populate the form
 const defaultProblemValues = {
   title: "",
   description: "",
@@ -128,13 +124,11 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
 
           {!loading && (
             <div className="space-y-4">
-              {/* Title */}
               <div className="form-control">
                 <label className="label"><span className="label-text">Title</span></label>
                 <input type="text" className={`input input-bordered ${errors.title ? 'input-error' : ''}`} {...register("title")} />
               </div>
 
-              {/* Difficulty */}
               <div className="form-control">
                 <label className="label"><span className="label-text">Difficulty</span></label>
                 <select className="select select-bordered" {...register("difficulty")}>
@@ -144,19 +138,16 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
                 </select>
               </div>
 
-              {/* Tags */}
               <div className="form-control">
                 <label className="label"><span className="label-text">Tags (comma-separated)</span></label>
                 <input type="text" placeholder="Array, Math, Hash Table" className={`input input-bordered ${errors.tags ? 'input-error' : ''}`} {...register("tags")} />
               </div>
 
-              {/* Description */}
               <div className="form-control">
                 <label className="label"><span className="label-text">Description (Markdown supported)</span></label>
                 <textarea className="textarea textarea-bordered h-40 font-mono" {...register("description")}></textarea>
               </div>
 
-              {/* --- Visible Test Cases (Dynamic) --- */}
               <div>
                 <h3 className="text-lg font-semibold mt-4 mb-2">Visible Test Cases</h3>
                 {visibleFields.map((field, index) => (
@@ -184,7 +175,6 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
                 </button>
               </div>
 
-              {/* --- Hidden Test Cases (Dynamic) --- */}
               <div>
                 <h3 className="text-lg font-semibold mt-4 mb-2">Hidden Test Cases</h3>
                 {hiddenFields.map((field, index) => (
@@ -208,7 +198,6 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
                 </button>
               </div>
 
-              {/* --- Start Code (Static 5 Languages) --- */}
               <div>
                 <h3 className="text-lg font-semibold mt-4 mb-2">Function Stubs (Start Code)</h3>
                 <div className="space-y-4">
@@ -222,7 +211,6 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
                 </div>
               </div>
 
-              {/* --- Reference Code (Static 5 Languages) --- */}
               <div>
                 <h3 className="text-lg font-semibold mt-4 mb-2">Reference Solutions</h3>
                 <div className="space-y-4">
@@ -240,7 +228,6 @@ const ProblemForm = ({ mode, problemId, onSuccess, onCancel, onDelete }) => {
           )}
         </div>
 
-        {/* --- Form Footer --- */}
         <div className="p-4 border-t border-base-300">
           <div className="flex justify-between">
             <div>

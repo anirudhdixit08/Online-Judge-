@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-// --- Zod Schema for the new admin form ---
+//Zod Schema for the new admin form 
 const passwordValidation = z.string().min(8, { message: "Must be 8+ characters" });
 const adminSchema = z.object({
   firstName: z.string().min(3, { message: "First name is required" }),
@@ -14,9 +14,8 @@ const adminSchema = z.object({
   emailId: z.string().email({ message: "A valid email is required" }),
   password: passwordValidation,
 });
-// --- End Schema ---
 
-// --- List Component ---
+
 const AdminList = () => {
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,7 +56,6 @@ const AdminList = () => {
   );
 };
 
-// --- Add Admin Form Component ---
 const AddAdminForm = ({ onAdminAdded }) => {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -69,8 +67,8 @@ const AddAdminForm = ({ onAdminAdded }) => {
     try {
       const response = await axiosClient.post('/user/admin/register', data);
       toast.success(response.data);
-      reset(); // Clear the form
-      onAdminAdded(); // Tell the parent to refresh the list
+      reset(); 
+      onAdminAdded(); 
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to create admin.");
     } finally {
@@ -114,15 +112,13 @@ const AddAdminForm = ({ onAdminAdded }) => {
   );
 };
 
-// --- Main Page Component ---
+
 const AdminManagement = () => {
-  // This key is a simple trick to force the AdminList to re-fetch
   const [listKey, setListKey] = useState(0); 
   const refreshAdminList = () => setListKey(prevKey => prevKey + 1);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {/* Column 1: List Admins */}
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title mb-4">Current Admins</h2>
@@ -132,7 +128,6 @@ const AdminManagement = () => {
         </div>
       </div>
       
-      {/* Column 2: Add New Admin */}
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title mb-4">Add New Admin</h2>

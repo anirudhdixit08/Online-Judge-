@@ -14,11 +14,8 @@ const ForgotPassword = () => {
     setErrorMessage('');
 
     try {
-      // 1. Send request to backend
       const res = await axiosClient.post('/user/forgot-password', { emailId: email });
 
-      // 2. Navigate to Reset Page on success
-      // We pass the email in 'state' so the user doesn't have to type it again
       navigate('/reset-password', { 
         state: { 
           email: email, 

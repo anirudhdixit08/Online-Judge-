@@ -1,4 +1,4 @@
-// import './config.js'; // This loads all .env variables
+
 import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -26,7 +26,7 @@ const app = express();
 const corsOptions = {
     origin: 'http://localhost:5173',
     credentials : true,
-    optionsSuccessStatus: 200 // For legacy browser support 
+    optionsSuccessStatus: 200 
 };
   
   app.use(cors(corsOptions));

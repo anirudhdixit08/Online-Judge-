@@ -17,8 +17,7 @@ const Contact = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     const userInfo = {
-      // NOTE: Replace this with your actual Web3Forms access key
-      access_key: "d9d792bd-8892-4439-928b-42235ed2438a", 
+      access_key: "a47f08b6-0170-40ca-94f8-50bc3246abd2", 
       name: data.username,
       email: data.email,
       message: data.message,
@@ -150,3 +149,4 @@ const Contact = () => {
 };
 
 export default Contact;
+
