@@ -67,7 +67,7 @@ export const isAuthorised = async(req,res,next) => {
         }
 
         const isBlocked = await redisClient.exists(`token:${token}`);
-        console.log("is blocked in redis : "+isBlocked);
+        // console.log("is blocked in redis : "+isBlocked);
         if(isBlocked){
             console.log("Token found in redis blocked list");
             throw new Error("Invalid token!");

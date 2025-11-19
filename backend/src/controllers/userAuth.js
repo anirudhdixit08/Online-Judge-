@@ -55,7 +55,7 @@ export const sendOTP = async (req, res) => {
             lowerCaseAlphabets: false,
             specialChars: false,
         });
-        console.log("OTP Generated: ",otp);
+        // console.log("OTP Generated: ",otp);
 
         //check unique otp or not
         const result = await OTP.findOne({otp: otp});
@@ -74,7 +74,7 @@ export const sendOTP = async (req, res) => {
 
         //create an entry for db
         const otpBody = await OTP.create(otpPayload);
-        console.log(otpBody);
+        // console.log(otpBody);
 
         const emailTemplate = otpTemplate(otp);
 
