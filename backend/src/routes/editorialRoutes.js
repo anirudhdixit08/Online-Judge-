@@ -7,6 +7,6 @@ const editorialRouter = express.Router();
 editorialRouter.get("/create/:problemId",isAuthorised,generateUploadSignature);
 editorialRouter.post("/save",isAuthorised,saveMetaData);
 editorialRouter.delete("/delete/:problemId",isAuthorised,deleteEditorial);
-editorialRouter.get("/problem/:problemId", isAuthorised, getEditorialForProblem);
+editorialRouter.get("/problem/:problemId", isAuthenticated, getEditorialForProblem);
 
 export default editorialRouter;
