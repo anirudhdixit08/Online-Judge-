@@ -51,21 +51,21 @@ const SubmissionsTab = ({ problemId }) => {
   };
 
   if (loading) {
-    return <span className="loading loading-spinner"></span>;
+    return <span className="loading loading-spinner loading-md"></span>;
   }
 
   if (error) {
-    return <div className="alert alert-error">{error}</div>;
+    return <div className="alert alert-error text-sm">{error}</div>;
   }
 
   if (submissions.length === 0) {
-    return <div>You have not made any submissions for this problem yet.</div>;
+    return <div className="rounded-md border border-base-300 bg-base-200/40 p-4 text-sm text-base-content/70">You have not made any submissions for this problem yet.</div>;
   }
 
   return (
     <>
-      <div className="overflow-x-auto">
-        <table className="table w-full">
+      <div className="overflow-x-auto rounded-md border border-base-300">
+        <table className="table table-zebra w-full">
           {/*UPDATED TABLE HEAD*/}
           <thead>
             <tr>
@@ -100,31 +100,31 @@ const SubmissionsTab = ({ problemId }) => {
 
       {selectedSubmission && (
         <div className="modal modal-open">
-          <div className="modal-box w-11/12 max-w-4xl">
-            <h3 className="font-bold text-lg">
+          <div className="modal-box w-11/12 max-w-4xl p-5">
+            <h3 className="font-bold text-xl">
               Submission Details
             </h3>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
-              <div className="stat p-0">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-5">
+              <div className="stat rounded-md bg-base-200/50 p-3">
                 <div className="stat-title">Status</div>
                 <div className={`stat-value text-lg ${getStatusColor(selectedSubmission.status)}`}>
                   {selectedSubmission.status}
                 </div>
               </div>
-              <div className="stat p-0">
+              <div className="stat rounded-md bg-base-200/50 p-3">
                 <div className="stat-title">Runtime</div>
                 <div className="stat-value text-lg">
                   {(selectedSubmission.runtime * 1000).toFixed(0)} ms
                 </div>
               </div>
-              <div className="stat p-0">
+              <div className="stat rounded-md bg-base-200/50 p-3">
                 <div className="stat-title">Memory</div>
                 <div className="stat-value text-lg">
                   {selectedSubmission.memory.toFixed(1)} KB
                 </div>
               </div>
-              <div className="stat p-0">
+              <div className="stat rounded-md bg-base-200/50 p-3">
                 <div className="stat-title">Test Cases</div>
                 <div className="stat-value text-lg">
                   {selectedSubmission.testCasesPassed} / {selectedSubmission.totalTestCases}
@@ -133,7 +133,7 @@ const SubmissionsTab = ({ problemId }) => {
             </div>
             
             {/* Read-only Code Editor */}
-            <div className="h-96 w-full border border-base-300 rounded-lg overflow-hidden">
+            <div className="h-96 w-full overflow-hidden rounded-md border border-base-300">
               <Editor
                 height="100%"
                 language={selectedSubmission.language === 'c++' ? 'cpp' : selectedSubmission.language}

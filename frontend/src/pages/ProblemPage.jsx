@@ -4,7 +4,7 @@ import RightPanel from '../components/problemSolving/rightPanel/RightPanel';
 
 const ProblemPage = () => {
   return (
-    <div className="flex flex-col lg:flex-row h-[calc(100vh-80px)]"> {/* 80px = approx navbar height */}
+    <div className="flex h-[calc(100vh-4rem)] min-h-0 flex-col overflow-hidden bg-base-200 lg:flex-row">
       
       <LeftPanel />
       

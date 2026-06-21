@@ -7,7 +7,7 @@ const Homepage = () => {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <div className="p-4 md:p-8 bg-base-200 min-h-screen">
+    <div className="px-4 py-6 md:px-8 md:py-8 bg-base-200 min-h-screen">
       {user?.role === 'admin' ? <AdminDashboard /> : <Dashboard />}
 
     </div>

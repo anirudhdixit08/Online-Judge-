@@ -115,15 +115,18 @@ const SignUp = () => {
   const displaySuccess = otpSuccess || authSuccess;
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-base-200">
-      <div className="card w-full max-w-lg shadow-xl bg-base-100">
-        <form className="card-body" onSubmit={handleSubmit(onRegister)}>
-          <h2 className="card-title text-3xl justify-center mb-6">
-            Create Your Account
-          </h2>
+    <div className="flex justify-center items-center min-h-screen bg-base-200 px-4 py-10">
+      <div className="card w-full max-w-lg bg-base-100">
+        <form className="card-body p-6 sm:p-8" onSubmit={handleSubmit(onRegister)}>
+          <div className="text-center mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+              Create Your Account
+            </h2>
+            <p className="mt-2 text-sm text-base-content/65">Set up your AlgoForge profile and verify your email.</p>
+          </div>
 
           {displayError && (
-            <div className="alert alert-error shadow-lg mb-4">
+            <div className="alert alert-error mb-2 text-sm">
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2.95V19a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h11.05M15 5.95V3a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2h5.05M15 11l-3-3m0 0l-3 3m3-3v12" /></svg>
                 <span>{displayError}</span>
@@ -131,7 +134,7 @@ const SignUp = () => {
             </div>
           )}
           {displaySuccess && (
-            <div className="alert alert-success shadow-lg mb-4">
+            <div className="alert alert-success mb-2 text-sm">
               <div>
                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <span>{displaySuccess}</span>
@@ -143,7 +146,7 @@ const SignUp = () => {
             <>
               <div className="form-control">
                 <label className="label" htmlFor="firstName">
-                  <span className="label-text">First Name</span>
+                  <span className="label-text font-semibold">First Name</span>
                 </label>
                 <input
                   type="text" id="firstName"
@@ -159,7 +162,7 @@ const SignUp = () => {
 
               <div className="form-control">
                 <label className="label" htmlFor="lastName">
-                  <span className="label-text">Last Name</span>
+                  <span className="label-text font-semibold">Last Name</span>
                 </label>
                 <input
                   type="text" id="lastName"
@@ -175,7 +178,7 @@ const SignUp = () => {
 
               <div className="form-control">
                 <label className="label" htmlFor="userName">
-                  <span className="label-text">Username</span>
+                  <span className="label-text font-semibold">Username</span>
                 </label>
                 <input
                   type="text" id="userName"
@@ -191,7 +194,7 @@ const SignUp = () => {
 
               <div className="form-control">
                 <label className="label" htmlFor="emailId">
-                  <span className="label-text">Email</span>
+                  <span className="label-text font-semibold">Email</span>
                 </label>
                 <input
                   type="email" id="emailId"
@@ -207,7 +210,7 @@ const SignUp = () => {
 
               <div className="form-control">
                 <label className="label" htmlFor="password">
-                  <span className="label-text">Password</span>
+                  <span className="label-text font-semibold">Password</span>
                 </label>
                 <div className="relative w-full">
                   <input
@@ -272,7 +275,7 @@ const SignUp = () => {
             {isOtpSent ? (
               <button
                 type="submit" 
-                className={`btn btn-primary ${isLoading ? 'loading' : ''}`}
+                className={`btn btn-primary w-full ${isLoading ? 'loading' : ''}`}
                 disabled={isLoading}
               >
                 {authLoading ? 'Registering...' : 'Create Account'}
@@ -281,7 +284,7 @@ const SignUp = () => {
               <button
                 type="button" 
                 onClick={handleSendOtp} 
-                className={`btn btn-secondary ${isLoading ? 'loading' : ''}`}
+                className={`btn btn-secondary w-full ${isLoading ? 'loading' : ''}`}
                 disabled={isLoading}
               >
                 {otpLoading ? 'Sending...' : 'Send OTP'}
@@ -290,7 +293,7 @@ const SignUp = () => {
           </div>
 
           <div className="text-center mt-4">
-            <span className="text-sm">
+            <span className="text-sm text-base-content/70">
               Already have an account?{' '}
               <Link to="/login" className="link link-primary">
                 Log In

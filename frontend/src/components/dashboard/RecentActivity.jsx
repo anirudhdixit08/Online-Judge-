@@ -43,30 +43,34 @@ const RecentActivity = () => {
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl p-6">
-      <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+    <div className="card bg-base-100 p-5">
+      <h2 className="text-lg font-bold mb-4">Recent Activity</h2>
       
-      {loading && <span className="loading loading-spinner loading-md"></span>}
+      {loading && (
+        <div className="flex h-24 items-center justify-center rounded-md border border-base-300 bg-base-200/50">
+          <span className="loading loading-spinner loading-md"></span>
+        </div>
+      )}
       
       {!loading && activity.length === 0 && (
-        <p className="text-base-content/70">No recent submissions found.</p>
+        <p className="rounded-md border border-base-300 bg-base-200/40 p-4 text-sm text-base-content/70">No recent submissions found.</p>
       )}
 
       {!loading && activity.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="table">
+        <div className="overflow-x-auto rounded-md border border-base-300">
+          <table className="table table-zebra">
             <tbody>
               {activity.map((sub) => (
                 <tr key={sub._id} className="hover">
-                  <td className="p-4">
+                  <td className="p-3 sm:p-4">
                     <Link to={`/problem/${sub.problemId._id}`} className="font-semibold link link-hover">
                       {sub.problemId.title}
                     </Link>
                   </td>
-                  <td className={`p-4 font-semibold ${getStatusColor(sub.status)}`}>
+                  <td className={`p-3 sm:p-4 font-semibold ${getStatusColor(sub.status)}`}>
                     {sub.status.charAt(0).toUpperCase() + sub.status.slice(1)}
                   </td>
-                  <td className="p-4 text-right text-base-content/70 text-sm">
+                  <td className="p-3 sm:p-4 text-right text-base-content/70 text-sm">
                     {timeAgo(sub.createdAt)}
                   </td>
                 </tr>

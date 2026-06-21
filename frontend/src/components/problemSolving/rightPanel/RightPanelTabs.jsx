@@ -2,23 +2,30 @@ import React from 'react';
 
 // This is the navbar for the right panel
 const RightPanelTabs = ({ activeTab, onTabChange, runResult, submitResult }) => {
+  const tabClass = (tab) =>
+    `h-11 border-b-2 px-3 text-sm font-semibold transition-colors ${
+      activeTab === tab
+        ? 'border-primary text-primary'
+        : 'border-transparent text-base-content/65 hover:text-base-content'
+    }`;
+
   return (
-    <div className="tabs tabs-bordered bg-base-200 px-4">
+    <div className="flex shrink-0 items-center gap-1 border-b border-base-300 bg-base-200/70 px-3">
       <button 
-        className={`tab ${activeTab === 'code' ? 'tab-active' : ''}`}
+        className={tabClass('code')}
         onClick={() => onTabChange('code')}
       >
         Code
       </button>
       <button 
-        className={`tab ${activeTab === 'testcase' ? 'tab-active' : ''}`}
+        className={tabClass('testcase')}
         onClick={() => onTabChange('testcase')}
       >
         Testcase
       </button>
       {(runResult || submitResult) && (
         <button 
-          className={`tab ${activeTab === 'result' ? 'tab-active' : ''}`}
+          className={tabClass('result')}
           onClick={() => onTabChange('result')}
         >
           Result

@@ -1,8 +1,11 @@
 
 import React, { useEffect, useState } from "react";
 import axiosClient from "../utils/axiosClient"; 
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../slices/authSlice";
 
 export default function UpdateProfilePage() {
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -75,10 +78,12 @@ export default function UpdateProfilePage() {
       setLoading(true);
       const resp = await axiosClient.patch("/user/update", formData);
       const respData = resp.data;
+      const updatedUser = respData?.user ?? respData;
       setSuccess(respData?.message || "Profile updated successfully");
-      setUser(respData?.user ?? respData);
-      if (respData?.user?.profilePhoto) {
-        setPreviewUrl(respData.user.profilePhoto);
+      setUser(updatedUser);
+      dispatch(setAuthUser(updatedUser));
+      if (updatedUser?.profilePhoto) {
+        setPreviewUrl(updatedUser.profilePhoto);
       }
       setFile(null);
     } catch (err) {
@@ -97,15 +102,18 @@ export default function UpdateProfilePage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-12 p-6">
-      <div className="card bg-base-100 shadow-md">
-        <div className="card-body">
-          <h2 className="card-title">Update Profile</h2>
+    <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
+      <div className="card bg-base-100">
+        <div className="card-body p-5 md:p-8">
+          <div className="mb-2">
+            <h2 className="card-title text-2xl font-bold">Update Profile</h2>
+            <p className="text-sm text-base-content/70 mt-1">Keep your public profile details current.</p>
+          </div>
 
           {fetching ? (
             <div className="py-8 text-center">Loading profile...</div>
           ) : error ? (
-            <div className="alert alert-error shadow-lg mb-4">
+            <div className="alert alert-error mb-4 text-sm">
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -121,7 +129,7 @@ export default function UpdateProfilePage() {
           ) : null}
 
           {success && (
-            <div className="alert alert-success shadow-lg mb-4">
+            <div className="alert alert-success mb-4 text-sm">
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -137,7 +145,7 @@ export default function UpdateProfilePage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="flex items-center gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-5 rounded-lg bg-base-200/60 p-4">
               <div className="avatar">
                 <div className="w-24 h-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
                   {previewUrl ? (
@@ -161,7 +169,7 @@ export default function UpdateProfilePage() {
                   onChange={handleFileChange}
                   className="file-input file-input-bordered w-full max-w-xs"
                 />
-                <p className="text-sm text-gray-500 mt-2">Allowed: JPG, PNG, GIF. Max recommended size: 2MB.</p>
+                <p className="text-sm text-base-content/60 mt-2">Allowed: JPG, PNG, GIF. Max recommended size: 2MB.</p>
               </div>
             </div>
 
@@ -202,14 +210,14 @@ export default function UpdateProfilePage() {
                   className="input input-bordered w-full"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">Allowed characters: letters, numbers, underscore. 3–30 chars.</p>
+                <p className="text-xs text-base-content/60 mt-1">Allowed characters: letters, numbers, underscore. 3-30 chars.</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center gap-3 pt-2">
               <button
                 type="submit"
-                className={`btn btn-primary ${loading ? "loading" : ""}`}
+                className={`btn btn-primary sm:w-auto ${loading ? "loading" : ""}`}
                 disabled={loading}
               >
                 {loading ? "Updating..." : "Save changes"}
@@ -217,7 +225,7 @@ export default function UpdateProfilePage() {
 
               <button
                 type="button"
-                className="btn btn-ghost"
+                className="btn btn-ghost sm:w-auto"
                 onClick={() => {
                   // reset local edits to server values
                   setFirstName(user?.firstName || "");
@@ -234,7 +242,7 @@ export default function UpdateProfilePage() {
             </div>
           </form>
 
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-2 text-sm text-base-content/60 border-t border-base-300 pt-4">
             <p>Note: Changes may require re-login in parts of the app that cache user info.</p>
           </div>
         </div>

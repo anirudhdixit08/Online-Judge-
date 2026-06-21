@@ -10,11 +10,12 @@ const AiTutorTab = ({ problem }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const chatEndRef = useRef(null); 
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (!chatContainerRef.current) return;
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  }, [messages, loading]);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -53,13 +54,13 @@ const AiTutorTab = ({ problem }) => {
 
 
   return (
-    <div className="flex flex-col h-full max-h-[75vh]">
+    <div className="flex h-full max-h-[75vh] flex-col">
       
-      <div className="grow overflow-y-auto pr-2 space-y-4">
+      <div ref={chatContainerRef} className="grow overflow-y-auto pr-2 space-y-3">
         {/* Initial Prompt */}
         {messages.length === 0 && (
           <div className="chat chat-start">
-            <div className="chat-bubble bg-base-300 text-base-content">
+            <div className="chat-bubble rounded-md bg-base-200/70 text-sm leading-6 text-base-content">
               <ReactMarkdown>
                 {`Hi! I'm your AI assistant for the problem **${problem.title}**.\n\nHow can I help you? You can ask for hints, code reviews, or the solution.`}
               </ReactMarkdown>
@@ -69,7 +70,7 @@ const AiTutorTab = ({ problem }) => {
 
         {messages.map((msg, index) => (
           <div key={index} className={`chat ${msg.role === 'user' ? 'chat-end' : 'chat-start'}`}>
-            <div className={`chat-bubble ${msg.role === 'user' ? 'chat-bubble-primary' : 'bg-base-300 text-base-content'}`}>
+            <div className={`chat-bubble rounded-md text-sm leading-6 ${msg.role === 'user' ? 'chat-bubble-primary' : 'bg-base-200/70 text-base-content'}`}>
               
               <div className="prose prose-sm max-w-none">
                 <ReactMarkdown
@@ -88,17 +89,16 @@ const AiTutorTab = ({ problem }) => {
         {/* Loading Indicator */}
         {loading && (
           <div className="chat chat-start">
-            <div className="chat-bubble bg-base-300 text-base-content">
+            <div className="chat-bubble rounded-md bg-base-200/70 text-base-content">
               <span className="loading loading-dots loading-sm"></span>
             </div>
           </div>
         )}
         
-        <div ref={chatEndRef} />
       </div>
 
       {/* --- Input Form (no change) --- */}
-      <form onSubmit={handleSend} className="flex gap-2 pt-4">
+      <form onSubmit={handleSend} className="flex gap-2 border-t border-base-300 pt-3">
         <input 
           type="text"
           value={input}
@@ -107,7 +107,7 @@ const AiTutorTab = ({ problem }) => {
           className="input input-bordered w-full"
           disabled={loading}
         />
-        <button type="submit" className={`btn btn-primary ${loading ? 'loading' : ''}`} disabled={loading}>
+        <button type="submit" className={`btn btn-primary min-w-20 ${loading ? 'loading' : ''}`} disabled={loading}>
           Send
         </button>
       </form>

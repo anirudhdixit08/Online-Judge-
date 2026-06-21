@@ -34,23 +34,23 @@ const Navbar = () => {
   };
 
   return (
-    <div className="navbar bg-base-100 shadow-md sticky top-0 z-50">
+    <div className="navbar bg-base-100/95 backdrop-blur border-b border-base-300/70 sticky top-0 z-50 min-h-16 px-3 sm:px-6">
       <div className="navbar-start">
         <Link 
           to="/" 
-          className="btn btn-ghost normal-case text-xl text-primary flex items-center space-x-2"
+          className="btn btn-ghost h-12 px-2 text-lg sm:text-xl text-primary flex items-center gap-2"
         >
           <img 
             src="/logo.svg" 
             alt="AlgoForge Logo" 
-            className="h-14 w-14" 
+            className="h-11 w-11"
           />
           <span>AlgoForge</span>
         </Link>
       </div>
 
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 gap-1">
           {isAuthenticated && (
             <>
               <li>
@@ -65,7 +65,7 @@ const Navbar = () => {
 
               {user?.role == "admin" && (
                 <li>
-                  <Link to="/admin" className="text-warning font-bold">
+                <Link to="/admin" className="text-warning font-bold">
                     Admin Panel
                   </Link>
                 </li>
@@ -75,10 +75,10 @@ const Navbar = () => {
         </ul>
       </div>
 
-      <div className="navbar-end">
+      <div className="navbar-end gap-1 sm:gap-2">
         <button
           onClick={handleThemeToggle}
-          className="btn btn-ghost btn-circle"
+          className="btn btn-ghost btn-circle btn-sm sm:btn-md"
           aria-label="Toggle theme"
         >
           {theme === "light" ? (
@@ -116,13 +116,13 @@ const Navbar = () => {
 
         {isAuthenticated ? (
           <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar btn-sm sm:btn-md">
+              <div className="w-9 sm:w-10 rounded-full ring ring-base-300 ring-offset-2 ring-offset-base-100">
                 {user?.profilePhoto ? (
                   <img
                     src={user.profilePhoto}
                     alt={`${user.userName}'s profile`}
-                    className="w-10 rounded-full object-cover"
+                    className="w-9 sm:w-10 rounded-full object-cover"
                   />
                 ) : (
                   <svg
@@ -144,7 +144,7 @@ const Navbar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-1 p-2 shadow-lg border border-base-300 bg-base-100 rounded-lg w-56"
             >
               <li>
                 <Link to="/profile">Profile</Link>
@@ -162,7 +162,7 @@ const Navbar = () => {
             <Link to="/login" className="btn btn-ghost btn-sm">
               Login
             </Link>
-            <Link to="/signup" className="btn btn-primary btn-sm">
+            <Link to="/signup" className="btn btn-primary btn-sm px-4">
               Sign Up
             </Link>
           </div>

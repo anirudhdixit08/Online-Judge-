@@ -8,12 +8,12 @@ import RecentCreatedProblems from './RecentCreatedProblems'; // 1. Import the ne
 
 const AdminDashboard = () => {
   return (
-    <div className="container mx-auto">
-      <div className="mb-6">
+    <div className="container mx-auto max-w-7xl">
+      <div className="mb-5 md:mb-6">
         <WelcomeBanner />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6">
         
         <div className="lg:col-span-2 flex flex-col gap-6">
           <ProblemOfTheDay />

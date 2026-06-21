@@ -141,19 +141,29 @@ const Problemset = () => {
       return (
         <tr>
           <td colSpan="5" className="text-center h-48">
-            <span className="loading loading-spinner loading-lg"></span>
+            <div className="flex items-center justify-center gap-3 text-base-content/70">
+              <span className="loading loading-spinner loading-md"></span>
+              <span className="text-sm">Loading problems...</span>
+            </div>
           </td>
         </tr>
       );
     }
     if (error) {
       return (
-        <tr><td colSpan="5"><div className="alert alert-error">{error}</div></td></tr>
+        <tr><td colSpan="5"><div className="alert alert-error text-sm">{error}</div></td></tr>
       );
     }
     if (problems.length === 0) {
       return (
-        <tr><td colSpan="5" className="text-center h-48">No problems found.</td></tr>
+        <tr>
+          <td colSpan="5" className="text-center h-48">
+            <div className="text-base-content/70">
+              <p className="font-semibold text-base-content">No problems found</p>
+              <p className="text-sm mt-1">Try clearing a filter or searching a different title.</p>
+            </div>
+          </td>
+        </tr>
       );
     }
     return problems.map((problem) => (
@@ -162,25 +172,29 @@ const Problemset = () => {
           {isAuthenticated && solvedProblemIds.has(problem._id) && <CheckIcon />}
         </td>
         <td className="w-[35%]">
-          <Link to={`/problem/${problem._id}`} className="link link-hover">
+          <Link to={`/problem/${problem._id}`} className="link link-hover font-semibold">
             {problem.title}
           </Link>
         </td>
-        <td className={`w-[15%] ${getDifficultyColor(problem.difficulty)}`}>
+        <td className={`w-[15%] font-semibold ${getDifficultyColor(problem.difficulty)}`}>
           {problem.difficulty}
         </td>
         <td className="w-[15%]">--%</td>
-        <td className="w-[30%] text-xs">{problem.tags.join(', ')}</td>
+        <td className="w-[30%] text-xs text-base-content/70">{problem.tags.join(', ')}</td>
       </tr>
     ));
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Problems</h1>
+    <div className="container mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8">
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Problems</h1>
+        <p className="mt-2 text-sm md:text-base text-base-content/70">Browse challenges, filter by topic, and keep your practice focused.</p>
+      </div>
 
       {/* --- Filter Bar --- */}
-      <div className="flex flex-wrap gap-4 mb-6">
+      <div className="card bg-base-100 p-4 mb-5">
+      <div className="flex flex-wrap gap-3">
         <select 
           className="select select-bordered w-full sm:w-auto"
           value={listType}
@@ -213,15 +227,16 @@ const Problemset = () => {
           </>
         )}
       </div>
+      </div>
 
       {/* This section is hidden if user selects "Solved Problems" */}
       {listType === 'all' && (
-        <div className="flex flex-wrap gap-2 mb-6 p-4 bg-base-200 rounded-lg">
+        <div className="flex flex-wrap gap-2 mb-5 p-4 bg-base-100 rounded-lg border border-base-300">
           {ALL_TAGS.map((tag) => (
             <button
               key={tag}
               onClick={() => handleTagClick(tag)}
-              className={`btn btn-sm rounded-full ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-ghost'}`}
+              className={`btn btn-xs sm:btn-sm ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-ghost'}`}
             >
               {tag}
             </button>
@@ -230,8 +245,8 @@ const Problemset = () => {
       )}
 
       {/* --- Problems Table --- */}
-      <div className="overflow-x-auto">
-        <table className="table w-full">
+      <div className="overflow-x-auto rounded-lg border border-base-300 bg-base-100">
+        <table className="table table-zebra w-full">
           <thead>
             <tr>
               <th>Status</th>
@@ -258,7 +273,7 @@ const Problemset = () => {
             >
               «
             </button>
-            <button className="join-item btn btn-disabled">
+            <button className="join-item btn btn-disabled px-5">
               Page {currentPage} of {totalPages}
             </button>
             <button 

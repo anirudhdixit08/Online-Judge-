@@ -78,22 +78,25 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-base-200 px-4">
-      <div className="card w-full max-w-lg shadow-xl bg-base-100">
-        <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
-          <h2 className="card-title text-3xl justify-center mb-6">
-            Welcome Back!
-          </h2>
+    <div className="flex justify-center items-center min-h-screen bg-base-200 px-4 py-10">
+      <div className="card w-full max-w-md bg-base-100">
+        <form className="card-body p-6 sm:p-8" onSubmit={handleSubmit(onSubmit)}>
+          <div className="text-center mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+              Welcome Back
+            </h2>
+            <p className="mt-2 text-sm text-base-content/65">Log in to continue practicing.</p>
+          </div>
 
           {error && (
-            <div role="alert" className="alert alert-error shadow-lg mb-4 text-sm py-3">
+            <div role="alert" className="alert alert-error mb-2 text-sm py-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2.95V19a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h11.05M15 5.5V3a2 2 0 00-2-2H7a2 2 0 00-2 2v12a2 2 0 002 2h5.05M15 11l-3-3m0 0l-3 3m3-3v12" /></svg>
               <span>{error}</span>
             </div>
           )}
           
           {success && (
-            <div role="alert" className="alert alert-success shadow-lg mb-4 text-sm py-3">
+            <div role="alert" className="alert alert-success mb-2 text-sm py-3">
               <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               <span>{success}</span>
             </div>
@@ -154,7 +157,7 @@ const Login = () => {
             </label>
           </div>
 
-          <div className="form-control mt-6">
+          <div className="form-control mt-3">
             <button
               type="submit"
               className={`btn btn-primary w-full ${loading ? 'loading' : ''}`}
@@ -164,7 +167,7 @@ const Login = () => {
             </button>
           </div>
 
-          <div className="text-center mt-4">
+          <div className="text-center mt-3">
             <span className="text-sm text-base-content/70">
               Don't have an account?{' '}
               <Link to="/signup" className="link link-primary link-hover font-semibold">

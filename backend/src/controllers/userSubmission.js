@@ -70,9 +70,9 @@ export const submitCode = async (req,res) => {
                 finalStatus = getStatusDescription(test.status_id);
                 
                 if (test.status_id === 6) { // Compilation Error
-                    finalErrorMessage = test.compile_output ? Buffer.from(test.compile_output, 'base64').toString('utf-8') : 'Compilation Error';
+                    finalErrorMessage = test.compile_output ? test.compile_output : 'Compilation Error';
                 } else if (test.stderr) { // Runtime Error, etc.
-                    finalErrorMessage = Buffer.from(test.stderr, 'base64').toString('utf-8');
+                    finalErrorMessage = test.stderr;
                 } else { // Wrong Answer (no stderr)
                     finalErrorMessage = "Output did not match expected output.";
                 }
@@ -261,7 +261,7 @@ export const runCustom = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Custom input failed: The reference solution could not be executed.",
-                error: refTestResult.stderr ? Buffer.from(refTestResult.stderr, 'base64').toString('utf-8') : "Execution error"
+                error: refTestResult.stderr ? refTestResult.stderr : "Execution error"
             });
         }
         
@@ -282,9 +282,9 @@ export const runCustom = async (req, res) => {
 
         let error = null;
         if (userResult.status_id === 6) { 
-            error = userResult.compile_output ? Buffer.from(userResult.compile_output, 'base64').toString('utf-8') : 'Compilation Error';
+            error = userResult.compile_output ? userResult.compile_output : 'Compilation Error';
         } else if (userResult.status_id > 4) { 
-            error = userResult.stderr ? Buffer.from(userResult.stderr, 'base64').toString('utf-8') : getStatusDescription(userResult.status_id);
+            error = userResult.stderr ? userResult.stderr : getStatusDescription(userResult.status_id);
         }
 
         // Build the clean response object

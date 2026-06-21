@@ -26,25 +26,29 @@ const ProblemOfTheDay = () => {
 
   const renderContent = () => {
     if (loading) {
-      return <span className="loading loading-spinner loading-md"></span>;
+      return (
+        <div className="flex h-20 items-center justify-center rounded-md border border-base-300 bg-base-200/50">
+          <span className="loading loading-spinner loading-md"></span>
+        </div>
+      );
     }
 
     if (error) {
-      return <div className="text-error">{error}</div>;
+      return <div className="alert alert-error text-sm">{error}</div>;
     }
 
     if (potd) {
       return (
-        <div className="flex flex-col sm:flex-row justify-between items-center">
-          <div>
-            <h3 className="text-xl font-semibold">{potd.title}</h3>
-            <div className="flex gap-2 mt-2">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center rounded-md border border-base-300 bg-base-200/40 p-4">
+          <div className="min-w-0">
+            <h3 className="text-lg font-semibold leading-snug">{potd.title}</h3>
+            <div className="flex flex-wrap gap-2 mt-3">
               <span className="badge badge-accent">{potd.difficulty}</span>
-              <span className="badge badge-outline">{potd.tags.join(', ')}</span>
+              <span className="badge badge-outline max-w-full truncate">{potd.tags.join(', ')}</span>
             </div>
           </div>
-          <div className="mt-4 sm:mt-0">
-            <Link to={`/problem/${potd._id}`} className="btn btn-primary">
+          <div className="sm:shrink-0">
+            <Link to={`/problem/${potd._id}`} className="btn btn-primary w-full sm:w-auto">
               View Problem
             </Link>
           </div>
@@ -52,13 +56,13 @@ const ProblemOfTheDay = () => {
       );
     }
 
-    return <p>Problem of the Day not set yet.</p>;
+    return <p className="rounded-md bg-base-200/70 p-4 text-sm text-base-content/70">Problem of the Day not set yet.</p>;
   };
 
   return (
-    <div className="card bg-base-100 shadow-xl p-6">
-      <h2 className="text-xl font-bold mb-4">Problem of the Day</h2>
-      <p className="text-sm text-base-content/70 mb-4">
+    <div className="card bg-base-100 p-5">
+      <h2 className="text-lg font-bold mb-1">Problem of the Day</h2>
+      <p className="text-sm text-base-content/65 mb-4 leading-6">
         A fresh challenge for you every day!
       </p>
       {renderContent()}

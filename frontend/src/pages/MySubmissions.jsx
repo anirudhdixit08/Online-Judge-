@@ -81,13 +81,31 @@ const MySubmissions = () => {
 
   const renderList = () => {
     if (listLoading) {
-      return <tr><td colSpan="5" className="text-center h-48"><span className="loading loading-spinner loading-lg"></span></td></tr>;
+      return (
+        <tr>
+          <td colSpan="5" className="text-center h-48">
+            <div className="flex items-center justify-center gap-3 text-base-content/70">
+              <span className="loading loading-spinner loading-md"></span>
+              <span className="text-sm">Loading submissions...</span>
+            </div>
+          </td>
+        </tr>
+      );
     }
     if (error) {
-      return <tr><td colSpan="5"><div className="alert alert-error">{error}</div></td></tr>;
+      return <tr><td colSpan="5"><div className="alert alert-error text-sm">{error}</div></td></tr>;
     }
     if (submissions.length === 0) {
-      return <tr><td colSpan="5" className="text-center h-48">You have no submissions.</td></tr>;
+      return (
+        <tr>
+          <td colSpan="5" className="text-center h-48">
+            <div className="text-base-content/70">
+              <p className="font-semibold text-base-content">You have no submissions yet</p>
+              <p className="text-sm mt-1">Open a problem and submit your first solution.</p>
+            </div>
+          </td>
+        </tr>
+      );
     }
     return submissions.map((sub) => (
       <tr 
@@ -112,10 +130,13 @@ const MySubmissions = () => {
 
   return (
     <>
-      <div className="container mx-auto p-8">
-        <h1 className="text-3xl font-bold mb-6">My Submissions</h1>
-        <div className="overflow-x-auto">
-          <table className="table w-full">
+      <div className="container mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">My Submissions</h1>
+          <p className="mt-2 text-sm md:text-base text-base-content/70">Review your latest attempts and inspect submitted code.</p>
+        </div>
+        <div className="overflow-x-auto rounded-lg border border-base-300 bg-base-100">
+          <table className="table table-zebra w-full">
             <thead>
               <tr>
                 <th>Problem</th>
@@ -141,7 +162,7 @@ const MySubmissions = () => {
             >
               «
             </button>
-            <button className="join-item btn btn-disabled">
+            <button className="join-item btn btn-disabled px-5">
               Page {currentPage} of {totalPages}
             </button>
             <button 
@@ -157,35 +178,35 @@ const MySubmissions = () => {
 
       {selectedSubmission && (
         <div className="modal modal-open">
-          <div className="modal-box w-11/12 max-w-4xl">
+          <div className="modal-box w-11/12 max-w-4xl p-5 md:p-6">
             {modalLoading ? (
               <div className="flex justify-center items-center h-96">
                 <span className="loading loading-spinner loading-lg"></span>
               </div>
             ) : (
               <>
-                <h3 className="font-bold text-lg">Submission Details</h3>
+                <h3 className="font-bold text-xl">Submission Details</h3>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
-                  <div className="stat p-0">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-5">
+                  <div className="stat rounded-md bg-base-200/70 p-3">
                     <div className="stat-title">Status</div>
                     <div className={`stat-value text-lg ${getStatusColor(selectedSubmission.status)}`}>
                       {selectedSubmission.status}
                     </div>
                   </div>
-                  <div className="stat p-0">
+                  <div className="stat rounded-md bg-base-200/70 p-3">
                     <div className="stat-title">Runtime</div>
                     <div className="stat-value text-lg">
                       {(selectedSubmission.runtime * 1000).toFixed(0)} ms
                     </div>
                   </div>
-                  <div className="stat p-0">
+                  <div className="stat rounded-md bg-base-200/70 p-3">
                     <div className="stat-title">Memory</div>
                     <div className="stat-value text-lg">
                       {selectedSubmission.memory.toFixed(1)} KB
                     </div>
                   </div>
-                  <div className="stat p-0">
+                  <div className="stat rounded-md bg-base-200/70 p-3">
                     <div className="stat-title">Test Cases</div>
                     <div className="stat-value text-lg">
                       {selectedSubmission.testCasesPassed} / {selectedSubmission.totalTestCases}

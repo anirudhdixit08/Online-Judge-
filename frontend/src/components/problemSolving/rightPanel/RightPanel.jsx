@@ -93,7 +93,7 @@ const RightPanel = () => {
   const onRunClick = activeTab === 'testcase' ? handleCustomRun : handleRun;
   
   return (
-    <div className="w-full lg:w-1/2 h-full flex flex-col">
+    <div className="h-full min-h-0 w-full lg:w-1/2 flex flex-col border-t border-base-300 bg-base-100 lg:border-l lg:border-t-0">
       {/* 1. The Tab "Navbar" */}
       <RightPanelTabs
         activeTab={activeTab}

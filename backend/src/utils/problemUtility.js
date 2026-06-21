@@ -16,54 +16,64 @@ async function fetchData(options) {
     const response = await axios.request(options);
     return response.data;
   } catch (error) {
-    console.error(error);
+    console.error("Compiler service request failed", {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+    });
+    throw error;
   }
 }
 
-const waiting = async(timer) => {
-    setTimeout(()=> {
-        return 1;
-    },timer);
-}
+const waiting = (timer) =>
+  new Promise((resolve) => setTimeout(resolve, timer));
+
+const COMPILER_BASE_URL = process.env.COMPILER_BASE_URL || "http://localhost:8000";
+const judge0BatchUrl = `${COMPILER_BASE_URL}/submissions/batch`;
 
 export const submitBatch = async (submissions) => {
   const options = {
     method: "POST",
-    url: "https://judge0-ce.p.rapidapi.com/submissions/batch",
+    url: judge0BatchUrl,
     params: {
       base64_encoded: "false",
     },
     headers: {
-      "x-rapidapi-key": process.env.JUDGE0_API_KEY,
-      "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
       "Content-Type": "application/json",
+      "X-Auth-Token": process.env.MY_COMPILER_SECRET,
     },
     data: { submissions },
   };
 
-  return await fetchData(options);
+  const result = await fetchData(options);
+  if (!Array.isArray(result)) {
+    throw new Error("Compiler service did not return submission tokens.");
+  }
+
+  return result;
 };
 
 export const submitToken = async (resultTokens) => {
   const options = {
     method: "GET",
-    url: "https://judge0-ce.p.rapidapi.com/submissions/batch",
+    url: judge0BatchUrl,
     params: {
       tokens: resultTokens.join(","),
       base64_encoded: "false",
       fields: "*",
     },
-    headers: {
-      "x-rapidapi-key": process.env.JUDGE0_API_KEY,
-      "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-    },
   };
 
   while(true){
     const result = await fetchData(options);
-    let isResultObtained = result.submissions.every((r)=> r.status_id>2);
-    if(isResultObtained)
+    if (!result?.submissions?.length) {
+      await waiting(500);
+      continue;
+    }
+
+    if(result.submissions.every((r)=> r.status_id>2))
         return result.submissions;
+
     await waiting (500); // this is like polling as we have done in online compiler project.
   }
 };

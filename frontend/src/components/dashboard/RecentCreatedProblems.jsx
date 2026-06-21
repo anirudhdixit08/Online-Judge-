@@ -40,23 +40,27 @@ const RecentCreatedProblems = () => {
   }, []);
 
   return (
-    <div className="card bg-base-100 shadow-xl p-6">
-      <h2 className="text-xl font-bold mb-4">Recent Created Problems</h2>
+    <div className="card bg-base-100 p-5">
+      <h2 className="text-lg font-bold mb-4">Recent Created Problems</h2>
       
-      {loading && <span className="loading loading-spinner loading-md"></span>}
+      {loading && (
+        <div className="flex h-24 items-center justify-center rounded-md border border-base-300 bg-base-200/50">
+          <span className="loading loading-spinner loading-md"></span>
+        </div>
+      )}
       
       {!loading && problems.length === 0 && (
-        <p className="text-base-content/70">No problems have been created yet.</p>
+        <p className="rounded-md border border-base-300 bg-base-200/40 p-4 text-sm text-base-content/70">No problems have been created yet.</p>
       )}
 
       {!loading && problems.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="table">
+        <div className="overflow-x-auto rounded-md border border-base-300">
+          <table className="table table-zebra">
             <tbody>
               {problems.map((prob) => (
                 <tr key={prob._id} className="hover">
                   {/* Problem Title & Difficulty */}
-                  <td className="p-4">
+                  <td className="p-3 sm:p-4">
                     <Link to={`/problem/${prob._id}`} className="font-semibold link link-hover">
                       {prob.title}
                     </Link>
@@ -65,7 +69,7 @@ const RecentCreatedProblems = () => {
                     </div>
                   </td>
                   {/* Time */}
-                  <td className="p-4 text-right text-base-content/70 text-sm">
+                  <td className="p-3 sm:p-4 text-right text-base-content/70 text-sm">
                     {timeAgo(prob.createdAt)}
                   </td>
                 </tr>

@@ -53,48 +53,55 @@ const LeftPanel = () => {
 
   if (loading) {
     return (
-      <div className="w-full lg:w-1/2 h-full flex justify-center items-center">
+      <div className="h-full w-full lg:w-1/2 flex justify-center items-center bg-base-100">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   }
 
   if (!problem) {
-    return <div className="w-full lg:w-1/2 h-full p-8">Problem not found.</div>;
+    return <div className="h-full w-full lg:w-1/2 p-8 bg-base-100">Problem not found.</div>;
   }
 
+  const tabClass = (tab) =>
+    `h-11 border-b-2 px-3 text-sm font-semibold transition-colors ${
+      activeTab === tab
+        ? 'border-primary text-primary'
+        : 'border-transparent text-base-content/65 hover:text-base-content'
+    }`;
+
   return (
-    <div className="w-full lg:w-1/2 h-full flex flex-col">
-      <div className="tabs tabs-bordered bg-base-200 px-4">
+    <div className="h-full min-h-0 w-full lg:w-1/2 flex flex-col bg-base-100">
+      <div className="flex shrink-0 items-center gap-1 overflow-x-auto border-b border-base-300 bg-base-200/70 px-3">
         <button 
-          className={`tab ${activeTab === 'description' ? 'tab-active' : ''}`}
+          className={tabClass('description')}
           onClick={() => setActiveTab('description')}
         >
           Description
         </button>
         
         <button 
-          className={`tab ${activeTab === 'ai' ? 'tab-active' : ''}`}
+          className={tabClass('ai')}
           onClick={() => setActiveTab('ai')}
         >
-          Smith AI 🤖
+          Smith AI
         </button>
 
         <button 
-          className={`tab ${activeTab === 'editorial' ? 'tab-active' : ''}`}
+          className={tabClass('editorial')}
           onClick={() => setActiveTab('editorial')}
         >
           Editorial
         </button>
         <button 
-          className={`tab ${activeTab === 'solutions' ? 'tab-active' : ''}`}
+          className={tabClass('solutions')}
           onClick={() => setActiveTab('solutions')}
         >
           Solutions
         </button>
         {isAuthenticated && (
           <button 
-            className={`tab ${activeTab === 'submissions' ? 'tab-active' : ''}`}
+            className={tabClass('submissions')}
             onClick={() => setActiveTab('submissions')}
           >
             My Submissions
@@ -102,7 +109,7 @@ const LeftPanel = () => {
         )}
       </div>
       
-      <div className="flex-1 overflow-y-auto p-6 bg-base-100">
+      <div className="min-h-0 flex-1 overflow-y-auto bg-base-100 px-4 py-5 md:px-6">
         {renderActiveTab()}
       </div>
     </div>

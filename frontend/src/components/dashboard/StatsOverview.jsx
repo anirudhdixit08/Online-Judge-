@@ -32,44 +32,44 @@ const StatsOverview = () => {
 
   if (loading) {
     return (
-      <div className="card bg-base-100 shadow-xl p-6 h-full flex justify-center items-center">
+      <div className="card bg-base-100 p-5 h-full min-h-52 flex justify-center items-center">
         <span className="loading loading-spinner loading-md"></span>
       </div>
     );
   }
 
   return (
-    <div className="card bg-base-100 shadow-xl p-6">
-      <h2 className="text-xl font-bold mb-6">Your Stats</h2>
-      <div className="space-y-6">
+    <div className="card bg-base-100 p-5">
+      <h2 className="text-lg font-bold mb-4">Your Stats</h2>
+      <div className="space-y-3">
         
-        <div className="flex items-center">
-          <div className="p-3 bg-success/20 text-success rounded-full">
+        <div className="flex items-center rounded-md border border-base-300 bg-base-200/35 p-3">
+          <div className="p-2 bg-success/10 text-success rounded-md">
             <CheckIcon />
           </div>
           <div className="ml-4">
             <div className="text-base-content/70 text-sm">Problems Solved</div>
-            <div className="text-2xl font-bold">{stats?.problemsSolved || 0}</div>
+            <div className="text-xl font-bold leading-tight">{stats?.problemsSolved || 0}</div>
           </div>
         </div>
 
-        <div className="flex items-center">
-          <div className="p-3 bg-info/20 text-info rounded-full">
+        <div className="flex items-center rounded-md border border-base-300 bg-base-200/35 p-3">
+          <div className="p-2 bg-info/10 text-info rounded-md">
             <ListIcon />
           </div>
           <div className="ml-4">
             <div className="text-base-content/70 text-sm">Total Submissions</div>
-            <div className="text-2xl font-bold">#{stats?.totalSubmissions || 0}</div>
+            <div className="text-xl font-bold leading-tight">{stats?.totalSubmissions || 0}</div>
           </div>
         </div>
 
-        <div className="flex items-center">
-          <div className="p-3 bg-warning/20 text-warning rounded-full">
+        <div className="flex items-center rounded-md border border-base-300 bg-base-200/35 p-3">
+          <div className="p-2 bg-warning/10 text-warning rounded-md">
             <PercentIcon />
           </div>
           <div className="ml-4">
             <div className="text-base-content/70 text-sm">Total Acceptance Rate</div>
-            <div className="text-2xl font-bold">{stats?.acceptanceRate || 0}%</div>
+            <div className="text-xl font-bold leading-tight">{stats?.acceptanceRate || 0}%</div>
           </div>
         </div>
 

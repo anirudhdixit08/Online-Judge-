@@ -10,10 +10,10 @@ const ResetIcon = () => (
 
 const CodeEditorPanel = ({ code, onCodeChange, language, onLanguageChange, boilerplate }) => {
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-2 bg-base-200 flex justify-between items-center">
+    <div className="h-full flex flex-col bg-base-100">
+      <div className="flex h-11 shrink-0 items-center justify-between border-b border-base-300 bg-base-200/45 px-3">
         <select 
-          className="select select-bordered select-sm"
+          className="select select-bordered select-sm min-h-8 h-8 text-xs font-semibold"
           value={language}
           onChange={(e) => onLanguageChange(e.target.value)}
         >
@@ -24,14 +24,14 @@ const CodeEditorPanel = ({ code, onCodeChange, language, onLanguageChange, boile
           <option value="c">C</option>
         </select>
         <button 
-          className="btn btn-ghost btn-sm"
+          className="btn btn-ghost btn-sm min-h-8 h-8 px-2 text-base-content/70 hover:text-base-content"
           onClick={() => onCodeChange(boilerplate)}
           title="Reset to default code"
         >
           <ResetIcon />
         </button>
       </div>
-      <div className="grow min-h-0">
+      <div className="grow min-h-0 bg-[#1e1e1e]">
         <Editor
           height="100%"
           language={language === 'c++' ? 'cpp' : language}
@@ -40,9 +40,13 @@ const CodeEditorPanel = ({ code, onCodeChange, language, onLanguageChange, boile
           theme="vs-dark"
           options={{
             fontSize: 14,
+            lineHeight: 21,
+            fontFamily: "'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace",
             minimap: { enabled: false },
             scrollBeyondLastLine: false,
             automaticLayout: true,
+            padding: { top: 12, bottom: 12 },
+            renderLineHighlight: 'line',
           }}
         />
       </div>
